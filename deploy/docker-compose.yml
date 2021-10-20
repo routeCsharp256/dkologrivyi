@@ -15,5 +15,13 @@ services:
     image: 'ghcr.io/ozon-edu-csharp-2021/employees-service:main'
     hostname: employees-service
   merchandise-service:
+    build: ../
     image: 'merchandise-service:latest'
-    hostname: merchandise-service  
+    hostname: merchandise-service
+    ports:
+      - "8081:80"
+    depends_on:
+      - stock-api
+      - supply-service
+      - emailing-service
+      - employees-service
