@@ -1,0 +1,25 @@
+﻿syntax = "proto3";
+option csharp_namespace = "MerchandiseService.Grpc";
+package MerchandiseService;
+
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+service MerchandiseGrpc {
+  rpc RequestMerch(MerchandiseRequest) returns (google.protobuf.Empty);
+  rpc GetIssuedMerch(GetIssuedMerchesRequest) returns (GetIssuedMerchesResponse);
+
+}
+
+
+
+message MerchandiseRequest{
+
+}
+message GetIssuedMerchesRequest {
+  int64 employeeId  = 1;
+}
+message GetIssuedMerchesResponse{
+
+}

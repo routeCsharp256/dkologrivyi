@@ -5,4 +5,13 @@
         <RootNamespace>MerchandiseService</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+      <ProjectReference Include="..\MerchandaiseGrpc\MerchandaiseGrpc.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Grpc.Core" Version="2.41.1" />
+    </ItemGroup>
+
 </Project>
