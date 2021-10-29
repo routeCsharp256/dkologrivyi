@@ -18,7 +18,7 @@ namespace Infrastructure.Middlewares
         public async Task Invoke(HttpContext context)
         {
             context.Response.StatusCode = 200;
-            await context.Response.WriteAsync("");
+            await context.Response.CompleteAsync();
         }
         
     }

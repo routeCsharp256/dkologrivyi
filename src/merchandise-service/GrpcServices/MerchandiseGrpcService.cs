@@ -16,14 +16,18 @@ namespace MerchandiseService.GrpcServices
             _merchService = merchService;
         }
 
-        public override async Task<Empty> RequestMerch(MerchandiseRequest request, ServerCallContext context)
+
+        public override Task<MerchandiseRequestResult> RequestMerch(MerchandiseRequest request, ServerCallContext context)
         {
             throw new NotImplementedException();
+            //return Task.Run(() => new MerchandiseRequestResult() {Result = "test"});
         }
 
-        public override async Task<GetIssuedMerchesResponse> GetIssuedMerch(GetIssuedMerchesRequest request, ServerCallContext context)
+
+        public override Task<GetIssuedMerchesResponse> GetIssuedMerch(GetIssuedMerchesRequest request, ServerCallContext context)
         {
             throw new NotImplementedException();
+            //return Task.Run(() => new GetIssuedMerchesResponse() {Response = "test2"});
         }
     }
 }

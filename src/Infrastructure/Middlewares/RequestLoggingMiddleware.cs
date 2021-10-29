@@ -27,29 +27,30 @@ namespace Infrastructure.Middlewares
         {
             try
             {
+                context.Request.EnableBuffering();
+                var route = context.Request.Path.Value;
+                var headers = context.Request.Headers;
+
+                var result = new StringBuilder();
+                result.AppendLine("Request logged");
+                result.AppendLine(route);
+                foreach (var header in headers)
+                {
+                    result.AppendLine(header.Key + " " + header.Value);
+                }
+
+
                 if (context.Request.ContentLength > 0)
                 {
-                    context.Request.EnableBuffering();
-
                     var buffer = new byte[context.Request.ContentLength.Value];
                     await context.Request.Body.ReadAsync(buffer, 0, buffer.Length);
-                    var route = context.Request.Path.Value;
-                    var headers = context.Request.Headers;
                     var bodyAsText = Encoding.UTF8.GetString(buffer);
-
-                    var result = new StringBuilder();
-                    result.AppendLine("Request logged");
-                    result.AppendLine(route);
-                    foreach (var header in headers)
-                    {
-                        result.AppendLine(header.Key + " " + header.Value);
-                    }
-
                     result.AppendLine(bodyAsText);
-                    _logger.LogInformation(result.ToString());
-
-                    context.Request.Body.Position = 0;
                 }
+
+                _logger.LogInformation(result.ToString());
+
+                context.Request.Body.Position = 0;
             }
             catch (Exception e)
             {

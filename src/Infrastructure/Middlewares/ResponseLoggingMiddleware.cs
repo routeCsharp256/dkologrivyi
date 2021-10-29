@@ -29,7 +29,7 @@ namespace Infrastructure.Middlewares
             {
                 await _next(context);
             }
-            catch (Exception e)
+            catch (Exception )
             {
                 _logger.LogError("Could not log response body");
                 throw;
