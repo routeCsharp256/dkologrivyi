@@ -18,6 +18,12 @@ ProjectSection(SolutionItems) = preProject
 	deploy\docker-compose.yml = deploy\docker-compose.yml
 EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{D169253E-5D25-4FC5-A0B8-0280D96F66B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchandaiseHttpClient", "src\MerchandaiseHttpClient\MerchandaiseHttpClient.csproj", "{927191D5-E564-400C-96AA-4521C0C24CDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchandaiseGrpc", "src\MerchandaiseGrpc\MerchandaiseGrpc.csproj", "{86FA3BD2-980D-4AF6-BF97-0B10F55A6DC1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,11 +31,26 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{786605A9-8D0E-41C5-A879-F162D909612D} = {730A1060-F51B-470C-83FE-19FA97297735}
+		{D169253E-5D25-4FC5-A0B8-0280D96F66B6} = {730A1060-F51B-470C-83FE-19FA97297735}
+		{927191D5-E564-400C-96AA-4521C0C24CDE} = {730A1060-F51B-470C-83FE-19FA97297735}
+		{86FA3BD2-980D-4AF6-BF97-0B10F55A6DC1} = {730A1060-F51B-470C-83FE-19FA97297735}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{786605A9-8D0E-41C5-A879-F162D909612D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{786605A9-8D0E-41C5-A879-F162D909612D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{786605A9-8D0E-41C5-A879-F162D909612D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{786605A9-8D0E-41C5-A879-F162D909612D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D169253E-5D25-4FC5-A0B8-0280D96F66B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D169253E-5D25-4FC5-A0B8-0280D96F66B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D169253E-5D25-4FC5-A0B8-0280D96F66B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D169253E-5D25-4FC5-A0B8-0280D96F66B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{927191D5-E564-400C-96AA-4521C0C24CDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{927191D5-E564-400C-96AA-4521C0C24CDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{927191D5-E564-400C-96AA-4521C0C24CDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{927191D5-E564-400C-96AA-4521C0C24CDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86FA3BD2-980D-4AF6-BF97-0B10F55A6DC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86FA3BD2-980D-4AF6-BF97-0B10F55A6DC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86FA3BD2-980D-4AF6-BF97-0B10F55A6DC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86FA3BD2-980D-4AF6-BF97-0B10F55A6DC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
