@@ -5,12 +5,13 @@ namespace MerchandaiseDomain.AggregationModels.MerchAgregate
 {
     public class MerchItem:Entity
     {
-        public MerchItem()
+        public MerchItem(Sku sku, MerchItemQuantity quantity)
         {
-                
+            Sku = sku;
+            Quantity = quantity;
         }
-
-        public MerchItemType ItemType { get; set; }
+        
+        public Sku Sku { get; set; }
         public MerchItemQuantity Quantity { get; set; }
 
     }

@@ -2,6 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MerchandaiseDomain.AggregationModels.Contracts;
+using MerchandaiseDomain.AggregationModels.EmployeeAgregate;
+using MerchandaiseDomain.AggregationModels.MerchAgregate;
+using MerchandaiseDomain.AggregationModels.OrdersAgregate;
+using MerchandaiseGrpcClient;
 using MerchandiseService.GrpcServices;
 using MerchandiseService.Services;
 using MerchandiseService.Services.Interfaces;
@@ -29,7 +34,12 @@ namespace MerchandiseService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IMerchService, MerchService>();
-
+            services.AddSingleton<IStockApi, StockApi>();
+            services.AddSingleton<IOrdersRepository, OrdersRepository>();
+            services.AddSingleton<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<IMerchRepository, MerchRepository>();
+            services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

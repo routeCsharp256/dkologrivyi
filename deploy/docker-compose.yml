@@ -14,6 +14,8 @@ services:
   employees-service:
     image: 'ghcr.io/ozon-edu-csharp-2021/employees-service:main'
     hostname: employees-service
+    ports:
+      - "8082:80"
   merchandise-service:
     build: ../
     image: 'merchandise-service:latest'

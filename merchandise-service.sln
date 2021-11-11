@@ -28,6 +28,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchandaiseDomain", "src\M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchandaiseInfrastructure", "src\MerchandaiseInfrastructure\MerchandaiseInfrastructure.csproj", "{E6CC36A1-FC6B-4CD6-8DA8-B52D65BFE2C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchandaiseGrpcClient", "src\MerchandaiseGrpcClient\MerchandaiseGrpcClient.csproj", "{B6DFD243-C107-4F16-B301-BEE2186D72DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchandaiseTests", "MerchandaiseTests\MerchandaiseTests.csproj", "{4A1226BD-7070-43A0-A33B-B7F0D9FA31E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +44,8 @@ Global
 		{86FA3BD2-980D-4AF6-BF97-0B10F55A6DC1} = {730A1060-F51B-470C-83FE-19FA97297735}
 		{AD91CEBC-8CF8-48D5-97FE-5C9408F33B42} = {730A1060-F51B-470C-83FE-19FA97297735}
 		{E6CC36A1-FC6B-4CD6-8DA8-B52D65BFE2C4} = {730A1060-F51B-470C-83FE-19FA97297735}
+		{B6DFD243-C107-4F16-B301-BEE2186D72DC} = {730A1060-F51B-470C-83FE-19FA97297735}
+		{4A1226BD-7070-43A0-A33B-B7F0D9FA31E7} = {DD2C054A-0B7F-45B9-AEF1-7275002B76AC}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{786605A9-8D0E-41C5-A879-F162D909612D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -66,5 +72,13 @@ Global
 		{E6CC36A1-FC6B-4CD6-8DA8-B52D65BFE2C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6CC36A1-FC6B-4CD6-8DA8-B52D65BFE2C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6CC36A1-FC6B-4CD6-8DA8-B52D65BFE2C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6DFD243-C107-4F16-B301-BEE2186D72DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6DFD243-C107-4F16-B301-BEE2186D72DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6DFD243-C107-4F16-B301-BEE2186D72DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6DFD243-C107-4F16-B301-BEE2186D72DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A1226BD-7070-43A0-A33B-B7F0D9FA31E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A1226BD-7070-43A0-A33B-B7F0D9FA31E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A1226BD-7070-43A0-A33B-B7F0D9FA31E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A1226BD-7070-43A0-A33B-B7F0D9FA31E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

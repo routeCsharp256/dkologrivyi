@@ -1,4 +1,6 @@
-﻿using MerchandaiseDomain.Models;
+﻿using System.Collections.Generic;
+using MerchandaiseDomain.AggregationModels.MerchAgregate;
+using MerchandaiseDomain.Models;
 
 namespace MerchandaiseDomain.AggregationModels.EmployeeAgregate
 {
@@ -6,22 +8,25 @@ namespace MerchandaiseDomain.AggregationModels.EmployeeAgregate
     {
         public Employee(Id id,
             FirstName firstName, MiddleName middleName, LastName lastName,
-            Email email,
-            ClothingSize clothingSize)
+            Email email 
+            )
         {
             Id = id;
             FirstName = firstName;
             MiddleName = middleName;
             LastName = lastName;
             Email = email;
-            ClothingSize = clothingSize;
+            //RequestedMerches = requestedMerches;
+            //ClothingSize = clothingSize;
         }
 
-        public Id Id { get; }
+        public new Id Id { get; }
         public FirstName FirstName { get; }
         public MiddleName MiddleName { get; }
         public LastName LastName { get; }
         public Email Email { get; }
-        public ClothingSize ClothingSize { get; }
+        //public ClothingSize ClothingSize { get; }
+        
+        //public List<Merch> RequestedMerches { get; }
     }
 }

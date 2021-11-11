@@ -1,0 +1,27 @@
+syntax = "proto3";
+option csharp_namespace = "MerchandaiseGrpc.StockApi";
+package StockApi;
+
+//import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+service StockApiGrpc {
+  rpc CheckIsAvailable(CheckIsAvailableRequest) returns (google.protobuf.BoolValue);
+rpc TryDeliverSku(TryDeliverSkuRequest) returns (google.protobuf.BoolValue);
+}
+
+message CheckIsAvailableRequest {
+  repeated Item Items = 1;
+}
+
+message Item
+{
+  int64 skuId = 1;
+  int64 quantity = 2;
+}
+
+message TryDeliverSkuRequest
+{
+  string employeeEmail = 1;
+  repeated Item Items = 2;
+}

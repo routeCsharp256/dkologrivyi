@@ -5,9 +5,9 @@ namespace MerchandaiseDomain.AggregationModels.MerchAgregate
 {
     public class MerchItemQuantity : ValueObject
     {
-        public int Value { get; set; }
+        public long Value { get; set; }
 
-        public MerchItemQuantity(int value)
+        public MerchItemQuantity(long value)
         {
             Value = value;
         }
