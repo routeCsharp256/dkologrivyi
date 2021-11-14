@@ -1,4 +1,4 @@
-﻿namespace MerchandiseService.Models
+﻿namespace MerchandaiseDomain.Models
 {
     public enum EmployeeEventType
     {

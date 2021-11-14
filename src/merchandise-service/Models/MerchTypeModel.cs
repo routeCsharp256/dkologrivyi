@@ -1,6 +1,6 @@
-﻿namespace MerchandiseService.Models
+﻿namespace MerchandaiseDomain.Models
 {
-    public enum MerchType
+    public enum MerchTypeModel
     {
         WelcomePack = 10,
         ConferenceListenerPack = 20,

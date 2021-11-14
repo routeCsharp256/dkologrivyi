@@ -35,7 +35,12 @@ namespace MerchandaiseDomain.Models
             return typeMatches && valueMatches;
         }
 
-        public int CompareTo(object other) => Id.CompareTo(((Enumeration)other).Id);
-
+        public int CompareTo(object other)
+        {
+            var enumeration = other as Enumeration;
+            if (enumeration == null)
+                throw new Exception("Cannot compare object!");
+            return Id.CompareTo(enumeration.Id);
+        }
     }
 }

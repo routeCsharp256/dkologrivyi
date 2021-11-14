@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using MerchandaiseDomain.AggregationModels.EmployeeAgregate;
 using MerchandaiseDomain.AggregationModels.MerchAgregate;
 using MerchandaiseDomain.AggregationModels.OrdersAgregate;
@@ -11,131 +12,78 @@ namespace MerchandaiseTests
     public class OrdersTests
     {
         [Fact]
-        public void AddNewMerchTest()
+        public void AddMerchToOrders_AddMerchToMerchItemsCollection()
         {
-            var orders = new Orders(
-                new Employee(new Id(13), new FirstName("John"), new MiddleName("Petrovich"), new LastName("Ivanov"),
-                    new Email("frodo@gmail.com")),
-                new List<Merch>()
-                {
-                    new Merch(new Name("Мерч нового сотрудника"), MerchType.WelcomePack,
-                        new List<MerchItem>()
-                        {
-                            new MerchItem(new Sku(2), new MerchItemQuantity(2)),
-                            new MerchItem(new Sku(1), new MerchItemQuantity(4))
-                        },
-                        Status.Processing,
-                        new RequestDate(DateTime.Now)
-                    )
-                }
-            );
+            var orders = GetOrdersForTest(DateTime.Now.AddMonths(-6), Status.Issued, MerchType.WelcomePack);
 
-            var newMerch = new Merch(new Name("Мерч слушателя курса"), MerchType.ConferenceListenerPack,
-                new List<MerchItem>()
-                {
-                    new MerchItem(new Sku(4), new MerchItemQuantity(1)),
-                    new MerchItem(new Sku(1), new MerchItemQuantity(1))
-                },
-                Status.Processing,
-                new RequestDate(DateTime.Now)
-            );
+            var newMerch = GetMerchForTest(DateTime.Now, Status.Processing, MerchType.ConferenceListenerPack);
 
             //Act
             orders.AddMerchToOrders(newMerch);
 
             //Assert
             Assert.Equal(2, orders.Merches.Count);
+            Assert.Equal(MerchType.ConferenceListenerPack, orders.Merches[^1].Type);
         }
 
         [Fact]
-        public void CheckWasRequestedTest()
+        public void CheckWasRequested_IfRequested_Throws()
         {
-            var orders = new Orders(
-                new Employee(new Id(13), new FirstName("John"), new MiddleName("Petrovich"), new LastName("Ivanov"),
-                    new Email("frodo@gmail.com")),
-                new List<Merch>()
-                {
-                    new Merch(new Name("Мерч нового сотрудника"), MerchType.WelcomePack,
-                        new List<MerchItem>()
-                        {
-                            new MerchItem(new Sku(2), new MerchItemQuantity(2)),
-                            new MerchItem(new Sku(1), new MerchItemQuantity(4))
-                        }
-                    )
-                }
-            );
-            
-            var newMerch = new Merch(new Name("Мерч нового сотрудника"), MerchType.WelcomePack,
-                new List<MerchItem>()
-                {
-                    new MerchItem(new Sku(2), new MerchItemQuantity(2)),
-                    new MerchItem(new Sku(1), new MerchItemQuantity(4))
-                }
-            );
-            
+            var orders = GetOrdersForTest(DateTime.Now, Status.Processing, MerchType.WelcomePack);
+            var newMerch = GetMerchForTest(DateTime.Now, Status.Processing, MerchType.WelcomePack);
+
             //Assert
             Assert.Throws<MerchAlreadyRequestedException>(() => orders.CheckWasRequested(newMerch));
         }
 
         [Fact]
-        public void CheckWasIssuedTest()
+        public void CheckWasIssued_SecondWelcomePackBeforeYearWork_ThrowsTest()
         {
-            var orders = new Orders(
+            var orders = GetOrdersForTest(DateTime.Now.AddDays(-364), Status.Issued, MerchType.WelcomePack);
+            var newMerch = GetMerchForTest(DateTime.Now, Status.Processing, MerchType.WelcomePack);
+            Assert.Throws<MerchAlreadyIssuedException>(() => orders.CheckWasIssued(newMerch));
+        }
+
+        [Fact]
+        public void CheckWasIssued_SecondWelcomePackAfterYearWork_DoesNotThrowsTest()
+        {
+            var orders = GetOrdersForTest(DateTime.Now.AddDays(-366), Status.Issued, MerchType.WelcomePack);
+            var newMerch = GetMerchForTest(DateTime.Now, Status.Processing, MerchType.WelcomePack);
+            orders.CheckWasIssued(newMerch);
+        }
+
+
+        private static Orders GetOrdersForTest(DateTime welcomePackRequestDate, Status status, MerchType merchType)
+        {
+            return new Orders(
                 new Employee(new Id(13), new FirstName("John"), new MiddleName("Petrovich"), new LastName("Ivanov"),
                     new Email("frodo@gmail.com")),
                 new List<Merch>()
                 {
-                    new Merch(new Name("Мерч нового сотрудника"), MerchType.WelcomePack,
-                        new List<MerchItem>()
-                        {
-                            new MerchItem(new Sku(2), new MerchItemQuantity(2)),
-                            new MerchItem(new Sku(1), new MerchItemQuantity(4))
-                        },
-                        Status.Issued,
-                        new RequestDate(DateTime.Parse("2021-01-01"))
-                    )
+                    GetMerchForTest(welcomePackRequestDate, status, merchType)
                 }
             );
-            
-            
-            var orders2 = new Orders(
+        }
+
+        private static Orders GetOrdersForTest()
+        {
+            return new Orders(
                 new Employee(new Id(13), new FirstName("John"), new MiddleName("Petrovich"), new LastName("Ivanov"),
                     new Email("frodo@gmail.com")),
                 new List<Merch>()
-                {
-                    new Merch(new Name("Мерч нового сотрудника"), MerchType.WelcomePack,
-                        new List<MerchItem>()
-                        {
-                            new MerchItem(new Sku(2), new MerchItemQuantity(2)),
-                            new MerchItem(new Sku(1), new MerchItemQuantity(4))
-                        },
-                        Status.Issued,
-                        new RequestDate(DateTime.Parse("2020-01-01"))
-                    )
-                }
             );
-            
-            var newMerch = new Merch(new Name("Мерч нового сотрудника"), MerchType.WelcomePack,
+        }
+
+        private static Merch GetMerchForTest(DateTime requestDate, Status status, MerchType merchType)
+        {
+            return new Merch(new Name("Мерч пак"), merchType,
                 new List<MerchItem>()
                 {
                     new MerchItem(new Sku(2), new MerchItemQuantity(2)),
                     new MerchItem(new Sku(1), new MerchItemQuantity(4))
-                }
-            );
-
-            try
-            {
-                orders.CheckWasIssued(newMerch);
-                Assert.True(true);
-            }
-            catch (Exception e)
-            {
-                Assert.True(false);
-            }
-
-            Assert.Throws<MerchAlreadyIssuedException>(() => orders2.CheckWasIssued(newMerch));
-
-
+                },
+                status,
+                new RequestDate(requestDate));
         }
     }
 }

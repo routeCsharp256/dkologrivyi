@@ -16,8 +16,6 @@ namespace MerchandaiseDomain.AggregationModels.EmployeeAgregate
             MiddleName = middleName;
             LastName = lastName;
             Email = email;
-            //RequestedMerches = requestedMerches;
-            //ClothingSize = clothingSize;
         }
 
         public new Id Id { get; }
@@ -25,8 +23,5 @@ namespace MerchandaiseDomain.AggregationModels.EmployeeAgregate
         public MiddleName MiddleName { get; }
         public LastName LastName { get; }
         public Email Email { get; }
-        //public ClothingSize ClothingSize { get; }
-        
-        //public List<Merch> RequestedMerches { get; }
     }
 }

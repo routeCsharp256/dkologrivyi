@@ -5,13 +5,14 @@ using MerchandaiseDomain.AggregationModels.Contracts;
 using MerchandaiseDomain.AggregationModels.EmployeeAgregate;
 using MerchandaiseDomain.AggregationModels.MerchAgregate;
 using MerchandaiseDomain.AggregationModels.OrdersAgregate;
+using MerchandaiseDomain.Models;
+using MerchandaiseDomain.Services.Interfaces;
 using MerchandaiseGrpc.StockApi;
 using MerchandaiseGrpcClient;
-using MerchandiseService.Models;
-using MerchandiseService.Services.Interfaces;
-using MerchType = MerchandiseService.Models.MerchType;
+using MerchType = MerchandaiseDomain.AggregationModels.MerchAgregate.MerchType;
 
-namespace MerchandiseService.Services
+
+namespace MerchandaiseDomain.Services
 {
     public class MerchService : IMerchService
     {
@@ -34,7 +35,7 @@ namespace MerchandiseService.Services
         public async Task RequestMerch(long employeeId, MerchType merchType)
         {
             var orders = await _ordersRepository.FindByEmloyeeIdAsync(employeeId);
-            var merch = await _merchRepository.FindByMerchType((int) merchType);
+            var merch = await _merchRepository.FindByMerchType(merchType.Id);
             orders.CheckWasRequested(merch);
             orders.AddMerchToOrders(merch);
 
@@ -44,32 +45,23 @@ namespace MerchandiseService.Services
                 items.Add(new Item() {SkuId = item.Sku.Value, Quantity = item.Quantity.Value});
             }
 
-            try
+            if (await _stockApi.CheckIsAvailableAsync(items))
             {
-                if (await _stockApi.CheckIsAvailableAsync(items))
+                if (await _stockApi.TryDeliverSkuAsync(orders.Employee.Email.Value, items))
                 {
-                    if (await _stockApi.TryDeliverSkuAsync(orders.Employee.Email.Value, items))
-                    {
-                        merch.ChangeStatus(Status.Issued);
-                    }
-                    else merch.ChangeStatus(Status.Waiting);
+                    merch.ChangeStatus(Status.Issued);
                 }
                 else merch.ChangeStatus(Status.Waiting);
             }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            finally
-            {
-                await _unitOfWork.SaveEntitiesAsync();
-            }
+            else merch.ChangeStatus(Status.Waiting);
+
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task CheckWasIssued(long employeeId, MerchType merchType)
         {
             var orders = await _ordersRepository.FindByEmloyeeIdAsync(employeeId);
-            var merch = await _merchRepository.FindByMerchType((int) merchType);
+            var merch = await _merchRepository.FindByMerchType(merchType.Id);
             orders.CheckWasIssued(merch);
         }
 

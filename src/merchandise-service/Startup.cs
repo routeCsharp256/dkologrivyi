@@ -6,10 +6,11 @@ using MerchandaiseDomain.AggregationModels.Contracts;
 using MerchandaiseDomain.AggregationModels.EmployeeAgregate;
 using MerchandaiseDomain.AggregationModels.MerchAgregate;
 using MerchandaiseDomain.AggregationModels.OrdersAgregate;
+using MerchandaiseDomain.Services;
+using MerchandaiseDomain.Services.Interfaces;
+using MerchandaiseGrpc.StockApi;
 using MerchandaiseGrpcClient;
 using MerchandiseService.GrpcServices;
-using MerchandiseService.Services;
-using MerchandiseService.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -39,7 +40,11 @@ namespace MerchandiseService
             services.AddSingleton<IUnitOfWork, UnitOfWork>();
             services.AddSingleton<IMerchRepository, MerchRepository>();
             services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
-            
+
+            services.AddGrpcClient<StockApiGrpc.StockApiGrpcClient>(o =>
+            {
+                o.Address = new Uri(Configuration.GetSection("StockApiUrl").Value);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

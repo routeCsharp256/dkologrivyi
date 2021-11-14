@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
-using MerchandiseService.Models;
+using MerchandaiseDomain.AggregationModels.MerchAgregate;
+using MerchandaiseDomain.Models;
 
-namespace MerchandiseService.Services.Interfaces
+
+namespace MerchandaiseDomain.Services.Interfaces
 {
     public interface IMerchService
     {

@@ -2,7 +2,6 @@ syntax = "proto3";
 option csharp_namespace = "MerchandaiseGrpc.StockApi";
 package StockApi;
 
-//import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
 
 service StockApiGrpc {

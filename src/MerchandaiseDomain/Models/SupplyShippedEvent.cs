@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MerchandiseService.Models
+namespace MerchandaiseDomain.Models
 {
     public class SupplyShippedEvent
     {

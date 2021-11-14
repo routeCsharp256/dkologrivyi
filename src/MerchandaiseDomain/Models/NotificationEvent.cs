@@ -1,4 +1,6 @@
-﻿namespace MerchandiseService.Models
+﻿using MerchandaiseDomain.AggregationModels.MerchAgregate;
+
+namespace MerchandaiseDomain.Models
 {
     public class NotificationEvent
     {

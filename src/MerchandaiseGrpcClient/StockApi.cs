@@ -3,15 +3,18 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Net.Client;
 using MerchandaiseGrpc.StockApi;
+using Microsoft.Extensions.Configuration;
 
 namespace MerchandaiseGrpcClient
 {
     public class StockApi : IStockApi
     {
-        public StockApi()
+
+        public StockApi(StockApiGrpc.StockApiGrpcClient client)
         {
-            var channel = GrpcChannel.ForAddress("https://localhost:5001");
-            var client = new StockApiGrpc.StockApiGrpcClient(channel);
+            //string url = config.GetSection("StockApiUrl").Value;
+            //var channel = GrpcChannel.ForAddress("https://localhost:5001");
+            //var client = new StockApiGrpc.StockApiGrpcClient(channel);
             _client = client;
         }
 

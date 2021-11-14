@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MerchandaiseDomain.Exceptions.MerchValidation;
 using MerchandaiseDomain.Models;
 
 namespace MerchandaiseDomain.AggregationModels.MerchAgregate
@@ -16,5 +17,14 @@ namespace MerchandaiseDomain.AggregationModels.MerchAgregate
         {
             yield return Value;
         }
+
+        private bool Validate(int value)
+        {
+            if (value <= 0)
+                throw new MerchItemQuantityInvalidException("quantity cannot be below 0");
+
+            return true;
+        }
+        
     }
 }
