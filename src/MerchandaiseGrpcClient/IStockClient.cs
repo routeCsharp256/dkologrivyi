@@ -4,7 +4,7 @@ using MerchandaiseGrpc.StockApi;
 
 namespace MerchandaiseGrpcClient
 {
-    public interface IStockApi
+    public interface IStockClient
     {
         Task<bool> CheckIsAvailableAsync(List<Item> items);
         Task<bool> TryDeliverSkuAsync(string employeeEmail, List<Item> items);

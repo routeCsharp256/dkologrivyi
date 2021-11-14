@@ -35,7 +35,7 @@ namespace MerchandiseService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IMerchService, MerchService>();
-            services.AddSingleton<IStockApi, StockApi>();
+            services.AddSingleton<IStockClient, StockClient>();
             services.AddSingleton<IOrdersRepository, OrdersRepository>();
             services.AddSingleton<IUnitOfWork, UnitOfWork>();
             services.AddSingleton<IMerchRepository, MerchRepository>();

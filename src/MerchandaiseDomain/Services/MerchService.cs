@@ -19,16 +19,16 @@ namespace MerchandaiseDomain.Services
         private readonly IOrdersRepository _ordersRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMerchRepository _merchRepository;
-        private readonly IStockApi _stockApi;
+        private readonly IStockClient _stockClient;
         private readonly IEmployeeRepository _employeeRepository;
 
         public MerchService(IOrdersRepository ordersRepository, IUnitOfWork unitOfWork,
-            IMerchRepository merchRepository, IStockApi stockApi, IEmployeeRepository employeeRepository)
+            IMerchRepository merchRepository, IStockClient stockClientApi, IEmployeeRepository employeeRepository)
         {
             _ordersRepository = ordersRepository;
             _unitOfWork = unitOfWork;
             _merchRepository = merchRepository;
-            _stockApi = stockApi;
+            _stockClient = stockClientApi;
             _employeeRepository = employeeRepository;
         }
 
@@ -45,9 +45,9 @@ namespace MerchandaiseDomain.Services
                 items.Add(new Item() {SkuId = item.Sku.Value, Quantity = item.Quantity.Value});
             }
 
-            if (await _stockApi.CheckIsAvailableAsync(items))
+            if (await _stockClient.CheckIsAvailableAsync(items))
             {
-                if (await _stockApi.TryDeliverSkuAsync(orders.Employee.Email.Value, items))
+                if (await _stockClient.TryDeliverSkuAsync(orders.Employee.Email.Value, items))
                 {
                     merch.ChangeStatus(Status.Issued);
                 }
@@ -89,9 +89,9 @@ namespace MerchandaiseDomain.Services
                             items.Add(new Item() {SkuId = item.Sku.Value, Quantity = item.Quantity.Value});
                         }
 
-                        if (await _stockApi.CheckIsAvailableAsync(items))
+                        if (await _stockClient.CheckIsAvailableAsync(items))
                         {
-                            if (await _stockApi.TryDeliverSkuAsync(employeeOrders.Employee.Email.Value, items))
+                            if (await _stockClient.TryDeliverSkuAsync(employeeOrders.Employee.Email.Value, items))
                             {
                                 merch.ChangeStatus(Status.Issued);
                             }

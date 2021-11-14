@@ -7,10 +7,10 @@ using Microsoft.Extensions.Configuration;
 
 namespace MerchandaiseGrpcClient
 {
-    public class StockApi : IStockApi
+    public class StockClient : IStockClient
     {
 
-        public StockApi(StockApiGrpc.StockApiGrpcClient client)
+        public StockClient(StockApiGrpc.StockApiGrpcClient client)
         {
             //string url = config.GetSection("StockApiUrl").Value;
             //var channel = GrpcChannel.ForAddress("https://localhost:5001");
