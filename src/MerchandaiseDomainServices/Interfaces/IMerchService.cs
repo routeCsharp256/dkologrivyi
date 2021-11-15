@@ -3,7 +3,7 @@ using MerchandaiseDomain.AggregationModels.MerchAgregate;
 using MerchandaiseDomain.Models;
 
 
-namespace MerchandaiseDomain.Services.Interfaces
+namespace MerchandaiseDomainServices.Interfaces
 {
     public interface IMerchService
     {

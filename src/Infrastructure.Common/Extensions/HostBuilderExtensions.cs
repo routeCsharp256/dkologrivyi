@@ -1,14 +1,13 @@
 ﻿using System.Reflection;
-using Infrastructure.Filters;
-using Infrastructure.Interceptors;
-using Infrastructure.Middlewares;
-using Infrastructure.StartupFilters;
+using Infrastructure.Common.Filters;
+using Infrastructure.Common.Interceptors;
+using Infrastructure.Common.StartupFilters;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
-namespace Infrastructure.Extensions
+namespace Infrastructure.Common.Extensions
 {
     public static class HostBuilderExtensions
     {

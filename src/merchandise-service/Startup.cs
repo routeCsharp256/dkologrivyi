@@ -6,10 +6,11 @@ using MerchandaiseDomain.AggregationModels.Contracts;
 using MerchandaiseDomain.AggregationModels.EmployeeAgregate;
 using MerchandaiseDomain.AggregationModels.MerchAgregate;
 using MerchandaiseDomain.AggregationModels.OrdersAgregate;
-using MerchandaiseDomain.Services;
-using MerchandaiseDomain.Services.Interfaces;
+using MerchandaiseDomainServices;
+using MerchandaiseDomainServices.Interfaces;
 using MerchandaiseGrpc.StockApi;
 using MerchandaiseGrpcClient;
+using MerchandaiseInfrastructure;
 using MerchandiseService.GrpcServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,7 @@ namespace MerchandiseService
         {
             services.AddSingleton<IMerchService, MerchService>();
             services.AddSingleton<IStockClient, StockClient>();
+            services.AddSingleton<IStockGateway, StockGateway>();
             services.AddSingleton<IOrdersRepository, OrdersRepository>();
             services.AddSingleton<IUnitOfWork, UnitOfWork>();
             services.AddSingleton<IMerchRepository, MerchRepository>();

@@ -1,9 +1,9 @@
 ﻿using System;
-using Infrastructure.Middlewares;
+using Infrastructure.Common.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Infrastructure.StartupFilters
+namespace Infrastructure.Common.StartupFilters
 {
     public class RequestStartUpFilter:IStartupFilter
     {

@@ -4,4 +4,9 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\MerchandaiseDomain\MerchandaiseDomain.csproj" />
+      <ProjectReference Include="..\MerchandaiseGrpcClient\MerchandaiseGrpcClient.csproj" />
+    </ItemGroup>
+
 </Project>

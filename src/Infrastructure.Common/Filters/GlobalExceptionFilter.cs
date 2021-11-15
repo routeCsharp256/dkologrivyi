@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Infrastructure.Filters
+namespace Infrastructure.Common.Filters
 {
     public class GlobalExceptionFilter:ExceptionFilterAttribute
     {

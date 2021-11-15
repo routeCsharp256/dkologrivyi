@@ -6,13 +6,14 @@ using MerchandaiseDomain.AggregationModels.EmployeeAgregate;
 using MerchandaiseDomain.AggregationModels.MerchAgregate;
 using MerchandaiseDomain.AggregationModels.OrdersAgregate;
 using MerchandaiseDomain.Models;
-using MerchandaiseDomain.Services.Interfaces;
+using MerchandaiseDomainServices.Interfaces;
 using MerchandaiseGrpc.StockApi;
 using MerchandaiseGrpcClient;
+using MerchandaiseInfrastructure;
 using MerchType = MerchandaiseDomain.AggregationModels.MerchAgregate.MerchType;
 
 
-namespace MerchandaiseDomain.Services
+namespace MerchandaiseDomainServices
 {
     public class MerchService : IMerchService
     {
@@ -21,15 +22,16 @@ namespace MerchandaiseDomain.Services
         private readonly IMerchRepository _merchRepository;
         private readonly IStockClient _stockClient;
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IStockGateway _stockGateway;
 
         public MerchService(IOrdersRepository ordersRepository, IUnitOfWork unitOfWork,
-            IMerchRepository merchRepository, IStockClient stockClientApi, IEmployeeRepository employeeRepository)
+            IMerchRepository merchRepository, IEmployeeRepository employeeRepository, IStockGateway stockGateway)
         {
             _ordersRepository = ordersRepository;
             _unitOfWork = unitOfWork;
             _merchRepository = merchRepository;
-            _stockClient = stockClientApi;
             _employeeRepository = employeeRepository;
+            _stockGateway = stockGateway;
         }
 
         public async Task RequestMerch(long employeeId, MerchType merchType)
@@ -39,15 +41,9 @@ namespace MerchandaiseDomain.Services
             orders.CheckWasRequested(merch);
             orders.AddMerchToOrders(merch);
 
-            var items = new List<Item>();
-            foreach (var item in merch.MerchItems)
+            if (await _stockGateway.CheckIsAvailableAsync(merch.MerchItems))
             {
-                items.Add(new Item() {SkuId = item.Sku.Value, Quantity = item.Quantity.Value});
-            }
-
-            if (await _stockClient.CheckIsAvailableAsync(items))
-            {
-                if (await _stockClient.TryDeliverSkuAsync(orders.Employee.Email.Value, items))
+                if (await _stockGateway.TryDeliverSkuAsync(orders.Employee.Email.Value, merch.MerchItems))
                 {
                     merch.ChangeStatus(Status.Issued);
                 }

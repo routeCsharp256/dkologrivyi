@@ -1,18 +1,20 @@
 ﻿using System;
-using Infrastructure.Middlewares;
+using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Infrastructure.StartupFilters
+namespace Infrastructure.Common.StartupFilters
 {
-    public class LiveStartupFilter : IStartupFilter
+    public class SwaggerStartupFilter:IStartupFilter
     {
         public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
         {
             return app =>
             {
-                app.Map("/live", builder => builder.UseMiddleware<LiveMiddleware>());
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api"));
                 next(app);
+
             };
         }
     }

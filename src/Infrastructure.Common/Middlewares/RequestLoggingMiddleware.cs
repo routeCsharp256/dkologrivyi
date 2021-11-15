@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace Infrastructure.Middlewares
+namespace Infrastructure.Common.Middlewares
 {
     public class RequestLoggingMiddleware
     {

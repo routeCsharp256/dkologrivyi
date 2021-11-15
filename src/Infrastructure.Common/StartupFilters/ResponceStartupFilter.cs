@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Reflection;
+using Infrastructure.Common.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Infrastructure.StartupFilters
+namespace Infrastructure.Common.StartupFilters
 {
-    public class SwaggerStartupFilter:IStartupFilter
+    public class ResponceStartupFilter:IStartupFilter
     {
         public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
         {
             return app =>
             {
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api"));
+                app.UseMiddleware<ResponseLoggingMiddleware>();
                 next(app);
-
             };
         }
     }

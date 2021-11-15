@@ -1,17 +1,17 @@
 ﻿using System;
-using Infrastructure.Middlewares;
+using Infrastructure.Common.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Infrastructure.StartupFilters
+namespace Infrastructure.Common.StartupFilters
 {
-    public class ReadyStartupFilter:IStartupFilter
+    public class VersionStartupFilter : IStartupFilter
     {
         public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
         {
             return app =>
             {
-                app.Map("/ready", builder => builder.UseMiddleware<ReadyMiddleware>());
+                app.Map("/version", builder => builder.UseMiddleware<VersionMiddleware>());
                 next(app);
             };
         }

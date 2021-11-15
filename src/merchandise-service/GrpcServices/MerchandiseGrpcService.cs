@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
-using MerchandaiseDomain.Services.Interfaces;
+using MerchandaiseDomainServices.Interfaces;
 using MerchandiseService.Grpc;
 
 namespace MerchandiseService.GrpcServices

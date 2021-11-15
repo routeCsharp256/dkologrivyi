@@ -12,9 +12,6 @@ namespace MerchandaiseGrpcClient
 
         public StockClient(StockApiGrpc.StockApiGrpcClient client)
         {
-            //string url = config.GetSection("StockApiUrl").Value;
-            //var channel = GrpcChannel.ForAddress("https://localhost:5001");
-            //var client = new StockApiGrpc.StockApiGrpcClient(channel);
             _client = client;
         }
 

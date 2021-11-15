@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MerchandaiseDomain.AggregationModels.MerchAgregate;
 using MerchandaiseDomain.Models;
-using MerchandaiseDomain.Services.Interfaces;
+using MerchandaiseDomainServices.Interfaces;
 using MerchandiseService.Models;
 using Microsoft.AspNetCore.Mvc;
 
