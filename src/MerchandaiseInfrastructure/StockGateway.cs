@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MerchandaiseDomain.AggregationModels.MerchAgregate;
 using MerchandaiseGrpc.StockApi;
 using MerchandaiseGrpcClient;
+using MerchandaiseDomainServices.Interfaces;
 
 namespace MerchandaiseInfrastructure
 {

@@ -11,6 +11,7 @@
       <ProjectReference Include="..\MerchandaiseDomain\MerchandaiseDomain.csproj" />
       <ProjectReference Include="..\MerchandaiseGrpcClient\MerchandaiseGrpcClient.csproj" />
       <ProjectReference Include="..\MerchandaiseGrpc\MerchandaiseGrpc.csproj" />
+      <ProjectReference Include="..\MerchandaiseInfrastructure\MerchandaiseInfrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>

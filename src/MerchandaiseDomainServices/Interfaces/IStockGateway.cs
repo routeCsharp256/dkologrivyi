@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using MerchandaiseDomain.AggregationModels.MerchAgregate;
 
 
-namespace MerchandaiseInfrastructure
+namespace MerchandaiseDomainServices.Interfaces
 {
     public interface IStockGateway
     {

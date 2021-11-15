@@ -7,9 +7,6 @@ using MerchandaiseDomain.AggregationModels.MerchAgregate;
 using MerchandaiseDomain.AggregationModels.OrdersAgregate;
 using MerchandaiseDomain.Models;
 using MerchandaiseDomainServices.Interfaces;
-using MerchandaiseGrpc.StockApi;
-using MerchandaiseGrpcClient;
-using MerchandaiseInfrastructure;
 using MerchType = MerchandaiseDomain.AggregationModels.MerchAgregate.MerchType;
 
 
@@ -20,7 +17,6 @@ namespace MerchandaiseDomainServices
         private readonly IOrdersRepository _ordersRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMerchRepository _merchRepository;
-        private readonly IStockClient _stockClient;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IStockGateway _stockGateway;
 
@@ -79,15 +75,9 @@ namespace MerchandaiseDomainServices
                 {
                     if (merch.CanBeShipped(merchItems))
                     {
-                        var items = new List<Item>();
-                        foreach (var item in merch.MerchItems)
+                        if (await _stockGateway.CheckIsAvailableAsync(merch.MerchItems))
                         {
-                            items.Add(new Item() {SkuId = item.Sku.Value, Quantity = item.Quantity.Value});
-                        }
-
-                        if (await _stockClient.CheckIsAvailableAsync(items))
-                        {
-                            if (await _stockClient.TryDeliverSkuAsync(employeeOrders.Employee.Email.Value, items))
+                            if (await _stockGateway.TryDeliverSkuAsync(employeeOrders.Employee.Email.Value, merch.MerchItems))
                             {
                                 merch.ChangeStatus(Status.Issued);
                             }

@@ -6,7 +6,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\MerchandaiseDomain\MerchandaiseDomain.csproj" />
-      <ProjectReference Include="..\MerchandaiseInfrastructure\MerchandaiseInfrastructure.csproj" />
     </ItemGroup>
 
 </Project>

@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\MerchandaiseDomainServices\MerchandaiseDomainServices.csproj" />
       <ProjectReference Include="..\MerchandaiseDomain\MerchandaiseDomain.csproj" />
       <ProjectReference Include="..\MerchandaiseGrpcClient\MerchandaiseGrpcClient.csproj" />
     </ItemGroup>
