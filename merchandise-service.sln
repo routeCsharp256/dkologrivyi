@@ -18,11 +18,21 @@ ProjectSection(SolutionItems) = preProject
 	deploy\docker-compose.yml = deploy\docker-compose.yml
 EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{D169253E-5D25-4FC5-A0B8-0280D96F66B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Common", "src\Infrastructure.Common\Infrastructure.Common.csproj", "{D169253E-5D25-4FC5-A0B8-0280D96F66B6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchandaiseHttpClient", "src\MerchandaiseHttpClient\MerchandaiseHttpClient.csproj", "{927191D5-E564-400C-96AA-4521C0C24CDE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchandaiseGrpc", "src\MerchandaiseGrpc\MerchandaiseGrpc.csproj", "{86FA3BD2-980D-4AF6-BF97-0B10F55A6DC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchandaiseDomain", "src\MerchandaiseDomain\MerchandaiseDomain.csproj", "{AD91CEBC-8CF8-48D5-97FE-5C9408F33B42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchandaiseInfrastructure", "src\MerchandaiseInfrastructure\MerchandaiseInfrastructure.csproj", "{E6CC36A1-FC6B-4CD6-8DA8-B52D65BFE2C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchandaiseGrpcClient", "src\MerchandaiseGrpcClient\MerchandaiseGrpcClient.csproj", "{B6DFD243-C107-4F16-B301-BEE2186D72DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchandaiseTests", "MerchandaiseTests\MerchandaiseTests.csproj", "{4A1226BD-7070-43A0-A33B-B7F0D9FA31E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchandaiseDomainServices", "src\MerchandaiseDomainServices\MerchandaiseDomainServices.csproj", "{3FC81163-55E3-404F-B840-9A586C7A9C0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +44,11 @@ Global
 		{D169253E-5D25-4FC5-A0B8-0280D96F66B6} = {730A1060-F51B-470C-83FE-19FA97297735}
 		{927191D5-E564-400C-96AA-4521C0C24CDE} = {730A1060-F51B-470C-83FE-19FA97297735}
 		{86FA3BD2-980D-4AF6-BF97-0B10F55A6DC1} = {730A1060-F51B-470C-83FE-19FA97297735}
+		{AD91CEBC-8CF8-48D5-97FE-5C9408F33B42} = {730A1060-F51B-470C-83FE-19FA97297735}
+		{E6CC36A1-FC6B-4CD6-8DA8-B52D65BFE2C4} = {730A1060-F51B-470C-83FE-19FA97297735}
+		{B6DFD243-C107-4F16-B301-BEE2186D72DC} = {730A1060-F51B-470C-83FE-19FA97297735}
+		{4A1226BD-7070-43A0-A33B-B7F0D9FA31E7} = {DD2C054A-0B7F-45B9-AEF1-7275002B76AC}
+		{3FC81163-55E3-404F-B840-9A586C7A9C0C} = {730A1060-F51B-470C-83FE-19FA97297735}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{786605A9-8D0E-41C5-A879-F162D909612D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -52,5 +67,25 @@ Global
 		{86FA3BD2-980D-4AF6-BF97-0B10F55A6DC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86FA3BD2-980D-4AF6-BF97-0B10F55A6DC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86FA3BD2-980D-4AF6-BF97-0B10F55A6DC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD91CEBC-8CF8-48D5-97FE-5C9408F33B42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD91CEBC-8CF8-48D5-97FE-5C9408F33B42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD91CEBC-8CF8-48D5-97FE-5C9408F33B42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD91CEBC-8CF8-48D5-97FE-5C9408F33B42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6CC36A1-FC6B-4CD6-8DA8-B52D65BFE2C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6CC36A1-FC6B-4CD6-8DA8-B52D65BFE2C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6CC36A1-FC6B-4CD6-8DA8-B52D65BFE2C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6CC36A1-FC6B-4CD6-8DA8-B52D65BFE2C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6DFD243-C107-4F16-B301-BEE2186D72DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6DFD243-C107-4F16-B301-BEE2186D72DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6DFD243-C107-4F16-B301-BEE2186D72DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6DFD243-C107-4F16-B301-BEE2186D72DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A1226BD-7070-43A0-A33B-B7F0D9FA31E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A1226BD-7070-43A0-A33B-B7F0D9FA31E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A1226BD-7070-43A0-A33B-B7F0D9FA31E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A1226BD-7070-43A0-A33B-B7F0D9FA31E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FC81163-55E3-404F-B840-9A586C7A9C0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FC81163-55E3-404F-B840-9A586C7A9C0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FC81163-55E3-404F-B840-9A586C7A9C0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FC81163-55E3-404F-B840-9A586C7A9C0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

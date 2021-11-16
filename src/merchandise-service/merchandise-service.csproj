@@ -6,12 +6,20 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+      <ProjectReference Include="..\Infrastructure.Common\Infrastructure.Common.csproj" />
+      <ProjectReference Include="..\MerchandaiseDomainServices\MerchandaiseDomainServices.csproj" />
+      <ProjectReference Include="..\MerchandaiseDomain\MerchandaiseDomain.csproj" />
+      <ProjectReference Include="..\MerchandaiseGrpcClient\MerchandaiseGrpcClient.csproj" />
       <ProjectReference Include="..\MerchandaiseGrpc\MerchandaiseGrpc.csproj" />
+      <ProjectReference Include="..\MerchandaiseInfrastructure\MerchandaiseInfrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Grpc.Core" Version="2.41.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services" />
     </ItemGroup>
 
 </Project>

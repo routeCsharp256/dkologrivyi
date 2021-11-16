@@ -2,9 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MerchandaiseDomain.AggregationModels.Contracts;
+using MerchandaiseDomain.AggregationModels.EmployeeAgregate;
+using MerchandaiseDomain.AggregationModels.MerchAgregate;
+using MerchandaiseDomain.AggregationModels.OrdersAgregate;
+using MerchandaiseDomainServices;
+using MerchandaiseDomainServices.Interfaces;
+using MerchandaiseGrpc.StockApi;
+using MerchandaiseGrpcClient;
+using MerchandaiseInfrastructure;
 using MerchandiseService.GrpcServices;
-using MerchandiseService.Services;
-using MerchandiseService.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,7 +36,17 @@ namespace MerchandiseService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IMerchService, MerchService>();
+            services.AddSingleton<IStockClient, StockClient>();
+            services.AddSingleton<IStockGateway, StockGateway>();
+            services.AddSingleton<IOrdersRepository, OrdersRepository>();
+            services.AddSingleton<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<IMerchRepository, MerchRepository>();
+            services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
 
+            services.AddGrpcClient<StockApiGrpc.StockApiGrpcClient>(o =>
+            {
+                o.Address = new Uri(Configuration.GetSection("StockApiUrl").Value);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
