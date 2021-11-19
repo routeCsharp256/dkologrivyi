@@ -14,7 +14,9 @@ namespace MerchandaiseMigrator
     {
         static void Main(string[] args)
         {
-             var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+             var configuration = new ConfigurationBuilder()
+                 .SetBasePath(@"C:\code\dkologrivyi\src\merchandise-service")
+                 //.SetBasePath(Directory.GetCurrentDirectory())
                  .AddJsonFile("appsettings.json")
                  .AddEnvironmentVariables()
                  .Build();

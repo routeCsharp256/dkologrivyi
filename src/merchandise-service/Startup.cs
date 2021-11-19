@@ -11,6 +11,7 @@ using MerchandaiseDomainServices.Interfaces;
 using MerchandaiseGrpc.StockApi;
 using MerchandaiseGrpcClient;
 using MerchandaiseInfrastructure;
+using MerchandaiseInfrastructure.Configuration;
 using MerchandiseService.GrpcServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -59,6 +60,16 @@ namespace MerchandiseService
                 endpoints.MapGrpcService<MerchandiseGrpcService>();
                 endpoints.MapControllers();
             });
+        }
+        
+        private void AddDatabaseComponents(IServiceCollection services)
+        {
+            services.Configure<DatabaseConnectionOptions>(Configuration.GetSection(nameof(DatabaseConnectionOptions)));
+            // services.AddScoped<IDbConnectionFactory<NpgsqlConnection>, NpgsqlConnectionFactory>();
+            // services.AddScoped<IUnitOfWork, UnitOfWork>();
+            // services.AddScoped<IChangeTracker, ChangeTracker>();
+            
+            
         }
     }
 }
