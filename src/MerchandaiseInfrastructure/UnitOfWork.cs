@@ -1,7 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using MerchandaiseDomain.AggregationModels.Contracts;
 
-namespace MerchandaiseDomain.AggregationModels.Contracts
+namespace MerchandaiseInfrastructure
 {
     public class UnitOfWork : IUnitOfWork
     {

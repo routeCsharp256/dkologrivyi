@@ -6,6 +6,7 @@ using MerchandaiseDomain.AggregationModels.MerchAgregate;
 using MerchandaiseDomain.AggregationModels.OrdersAgregate;
 using MerchandaiseDomain.Exceptions;
 using Xunit;
+using Id = MerchandaiseDomain.AggregationModels.EmployeeAgregate.Id;
 
 namespace MerchandaiseTests
 {
@@ -76,7 +77,9 @@ namespace MerchandaiseTests
 
         private static Merch GetMerchForTest(DateTime requestDate, Status status, MerchType merchType)
         {
-            return new Merch(new Name("Мерч пак"), merchType,
+            return new Merch(
+                new MerchId(1),
+                new Name("Мерч пак"), merchType,
                 new List<MerchItem>()
                 {
                     new MerchItem(new Sku(2), new MerchItemQuantity(2)),

@@ -10,4 +10,8 @@
       <ProjectReference Include="..\MerchandaiseGrpcClient\MerchandaiseGrpcClient.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Repositories" />
+    </ItemGroup>
+
 </Project>
