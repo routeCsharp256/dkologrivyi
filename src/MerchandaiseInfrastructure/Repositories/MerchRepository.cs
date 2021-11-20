@@ -1,8 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MerchandaiseDomain.AggregationModels.Contracts;
+using MerchandaiseDomain.AggregationModels.MerchAgregate;
 
-namespace MerchandaiseDomain.AggregationModels.MerchAgregate
+namespace MerchandaiseInfrastructure.Repositories
 {
     public class MerchRepository:IMerchRepository
     {

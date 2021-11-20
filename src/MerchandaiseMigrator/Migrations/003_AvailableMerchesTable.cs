@@ -12,12 +12,19 @@ namespace MerchandaiseMigrator.Migrations
                     merchId BIGSERIAL PRIMARY KEY,
 					name TEXT,
 					merchTypeId BIGSERIAL,
-					statusId INT,
-					requestDate DATE,
 					CONSTRAINT fk_merchType
 					  FOREIGN KEY(merchTypeId) 
 					  REFERENCES merchtypes(id));
-");
+					  ");
+            
+            Execute.Sql(@"
+				INSERT INTO public.availablemerches(name, merchtypeid)
+					VALUES ('Мерч для нового сотрудника', 10),
+					('Слушатель конференции', 20),
+					('Спикер на конференции', 30),
+					('Прошел испытательный', 40),
+					('5 лет в компании', 50);
+					");
         }
     
         public override void Down()

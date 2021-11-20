@@ -2,8 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MerchandaiseDomain.AggregationModels.Contracts;
+using MerchandaiseDomain.AggregationModels.OrdersAgregate;
 
-namespace MerchandaiseDomain.AggregationModels.OrdersAgregate
+namespace MerchandaiseInfrastructure.Repositories
 {
     public class OrdersRepository:IOrdersRepository
     {
@@ -19,6 +20,11 @@ namespace MerchandaiseDomain.AggregationModels.OrdersAgregate
         }
 
         public async Task<Orders> FindByEmloyeeIdAsync(long id, CancellationToken cancellationToken = default)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<Orders> FindByEmloyeeEmailAsync(string employeeEmail, CancellationToken cancellationToken = default)
         {
             throw new System.NotImplementedException();
         }

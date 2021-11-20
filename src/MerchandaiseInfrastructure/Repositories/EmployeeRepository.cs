@@ -1,8 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MerchandaiseDomain.AggregationModels.Contracts;
+using MerchandaiseDomain.AggregationModels.EmployeeAgregate;
 
-namespace MerchandaiseDomain.AggregationModels.EmployeeAgregate
+namespace MerchandaiseInfrastructure.Repositories
 {
     public class EmployeeRepository:IEmployeeRepository
     {

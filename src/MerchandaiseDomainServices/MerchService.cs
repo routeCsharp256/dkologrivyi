@@ -30,6 +30,26 @@ namespace MerchandaiseDomainServices
             _stockGateway = stockGateway;
         }
 
+        public async Task RequestMerch(string employeeEmail, MerchType merchType)
+        {
+            var orders = await _ordersRepository.FindByEmloyeeEmailAsync(employeeEmail);
+            var merch = await _merchRepository.FindByMerchType(merchType.Id);
+            orders.CheckWasRequested(merch);
+            orders.AddMerchToOrders(merch);
+
+            if (await _stockGateway.CheckIsAvailableAsync(merch.MerchItems))
+            {
+                if (await _stockGateway.TryDeliverSkuAsync(orders.Employee.Email.Value, merch.MerchItems))
+                {
+                    merch.ChangeStatus(Status.Issued);
+                }
+                else merch.ChangeStatus(Status.Waiting);
+            }
+            else merch.ChangeStatus(Status.Waiting);
+
+            await _unitOfWork.SaveChangesAsync();
+        }
+
         public async Task RequestMerch(long employeeId, MerchType merchType)
         {
             var orders = await _ordersRepository.FindByEmloyeeIdAsync(employeeId);

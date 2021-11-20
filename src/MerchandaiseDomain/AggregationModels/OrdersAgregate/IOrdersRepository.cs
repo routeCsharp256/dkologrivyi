@@ -16,7 +16,7 @@ namespace MerchandaiseDomain.AggregationModels.OrdersAgregate
         /// <returns></returns>
         Task<Orders> FindByEmloyeeIdAsync(long id, CancellationToken cancellationToken = default);
 
-
+        Task<Orders> FindByEmloyeeEmailAsync(string employeeEmail, CancellationToken cancellationToken = default);
         Task<List<Orders>> GetUnIssuedOrders(CancellationToken cancellationToken = default);
 
     }

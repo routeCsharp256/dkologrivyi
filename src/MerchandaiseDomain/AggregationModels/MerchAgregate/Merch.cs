@@ -56,6 +56,7 @@ namespace MerchandaiseDomain.AggregationModels.MerchAgregate
                 throw new MerchChangeStatusException("Merch is issued. Can't change status!");
             Status = status;
             RequestDate = new RequestDate(DateTime.Now);
+            
         }
 
         public bool CanBeShipped(List<MerchItem> items)
