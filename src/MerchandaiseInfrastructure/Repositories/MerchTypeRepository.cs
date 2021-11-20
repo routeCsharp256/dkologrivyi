@@ -36,7 +36,7 @@ namespace MerchandaiseInfrastructure.Repositories
                 commandTimeout: Timeout,
                 cancellationToken: token);
             var connection = await _dbConnectionFactory.CreateConnection(token);
-            var merchTypes = await connection.QueryAsync<MerchTypeDB>(commandDefinition);
+            var merchTypes = await connection.QueryAsync<MerchTypeDb>(commandDefinition);
             var result = merchTypes.Select(x => new MerchType(x.Id, x.Name));
             return result;
         }

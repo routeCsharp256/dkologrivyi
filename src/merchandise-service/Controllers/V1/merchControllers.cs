@@ -26,7 +26,7 @@ namespace MerchandiseService.Controllers.V1
         {
             try
             {
-                await _merchService.RequestMerch(requestModel.Employee.Id.Value, requestModel.Merch.Type);
+                //await _merchService.RequestMerch(requestModel.Employee.Id.Value, requestModel.Merch.Type);
                 return Ok("Success");
             }
             catch (Exception e)
@@ -42,7 +42,7 @@ namespace MerchandiseService.Controllers.V1
         {
             try
             {
-                await _merchService.CheckWasIssued(requestModel.Employee.Id.Value, requestModel.Merch.Type);
+                //await _merchService.CheckWasIssued(requestModel.Employee.Id.Value, requestModel.Merch.Type);
                 return Ok("Merch was not issued yet");
             }
             catch (Exception e)

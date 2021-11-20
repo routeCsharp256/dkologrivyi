@@ -1,6 +1,6 @@
 ﻿namespace MerchandaiseInfrastructure.Models
 {
-    public class MerchTypeDB
+    public class MerchTypeDb
     {
         public int Id { get; set; }
         

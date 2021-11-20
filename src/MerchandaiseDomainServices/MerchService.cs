@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using MerchandaiseDomain.AggregationModels.Contracts;
 using MerchandaiseDomain.AggregationModels.EmployeeAgregate;
@@ -30,8 +31,9 @@ namespace MerchandaiseDomainServices
             _stockGateway = stockGateway;
         }
 
-        public async Task RequestMerch(string employeeEmail, MerchType merchType)
+        public async Task RequestMerch(string employeeEmail, MerchType merchType, CancellationToken token)
         {
+            await _unitOfWork.StartTransaction(token);
             var orders = await _ordersRepository.FindByEmloyeeEmailAsync(employeeEmail);
             var merch = await _merchRepository.FindByMerchType(merchType.Id);
             orders.CheckWasRequested(merch);
@@ -50,7 +52,7 @@ namespace MerchandaiseDomainServices
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task RequestMerch(long employeeId, MerchType merchType)
+        public async Task RequestMerch(long employeeId, MerchType merchType, CancellationToken token)
         {
             var orders = await _ordersRepository.FindByEmloyeeIdAsync(employeeId);
             var merch = await _merchRepository.FindByMerchType(merchType.Id);
@@ -70,14 +72,14 @@ namespace MerchandaiseDomainServices
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task CheckWasIssued(long employeeId, MerchType merchType)
+        public async Task CheckWasIssued(long employeeId, MerchType merchType, CancellationToken token)
         {
             var orders = await _ordersRepository.FindByEmloyeeIdAsync(employeeId);
             var merch = await _merchRepository.FindByMerchType(merchType.Id);
             orders.CheckWasIssued(merch);
         }
 
-        public async Task NewSupply(SupplyShippedEvent supplyShippedEvent)
+        public async Task NewSupply(SupplyShippedEvent supplyShippedEvent, CancellationToken token)
         {
             List<MerchItem> merchItems = new List<MerchItem>();
             foreach (var item in supplyShippedEvent.Items)
@@ -109,14 +111,14 @@ namespace MerchandaiseDomainServices
             }
         }
 
-        public async Task NewNotification(NotificationEvent notificationEvent)
+        public async Task NewNotification(NotificationEvent notificationEvent, CancellationToken token)
         {
             if (notificationEvent.Payload is MerchDeliveryEventPayload)
             {
                 var merchType = ((MerchDeliveryEventPayload) notificationEvent.Payload).MerchType;
                 var empl = await _employeeRepository.FindEmployeeByEmail(notificationEvent.EmployeeEmail);
 
-                await RequestMerch(empl.Id.Value, merchType);
+                await RequestMerch(empl.Id.Value, merchType, token);
             }
         }
     }

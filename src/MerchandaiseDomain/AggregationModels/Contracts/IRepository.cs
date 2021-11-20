@@ -12,7 +12,7 @@ namespace MerchandaiseDomain.AggregationModels.Contracts
         /// <summary>
         /// Объект <see cref="IUnitOfWork"/>
         /// </summary>
-        IUnitOfWork UnitOfWork { get; }
+        //IUnitOfWork UnitOfWork { get; }
         
         /// <summary>
         /// Создать новую сущность

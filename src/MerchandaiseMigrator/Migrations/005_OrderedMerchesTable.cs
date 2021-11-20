@@ -15,13 +15,9 @@ namespace MerchandaiseMigrator.Migrations
 					merchTypeId BIGSERIAL,
 					statusId INT,
 					requestDate DATE,
-					employeeId BIGSERIAL,
 					CONSTRAINT fk_merchType
 					  FOREIGN KEY(merchTypeId) 
 					  REFERENCES merchtypes(id),
-				    CONSTRAINT fk_employee
-						FOREIGN KEY(employeeId)
-				    	REFERENCES employees(employeeId));
 ");
         }
 
