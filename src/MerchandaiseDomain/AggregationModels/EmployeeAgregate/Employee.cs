@@ -18,7 +18,7 @@ namespace MerchandaiseDomain.AggregationModels.EmployeeAgregate
             Email = email;
         }
 
-        public new Id Id { get; }
+        public new Id Id { get; set; }
         public FirstName FirstName { get; }
         public MiddleName MiddleName { get; }
         public LastName LastName { get; }

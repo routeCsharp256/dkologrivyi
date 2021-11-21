@@ -42,8 +42,7 @@ namespace MerchandaiseInfrastructure.Repositories
         public async Task<Orders> FindByEmloyeeEmailAsync(string employeeEmail, CancellationToken token)
         {
             Employee employee= await _employeeRepository.FindEmployeeByEmail(employeeEmail, token);
-            if (employee is null)
-                throw new EmployeeNotFoundInDbExeption();
+            
             
             const string sql = @"
                 SELECT orderid, employeeid, orderedmerchid

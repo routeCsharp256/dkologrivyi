@@ -5,9 +5,9 @@ namespace MerchandaiseDomain.AggregationModels.EmployeeAgregate
 {
     public class Id : ValueObject
     {
-        public long Value { get; }
+        public long? Value { get; }
 
-        public Id(long id)
+        public Id(long? id)
         {
             Value = id;
         }

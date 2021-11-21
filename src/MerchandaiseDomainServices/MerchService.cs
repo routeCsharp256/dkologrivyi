@@ -6,6 +6,7 @@ using MerchandaiseDomain.AggregationModels.Contracts;
 using MerchandaiseDomain.AggregationModels.EmployeeAgregate;
 using MerchandaiseDomain.AggregationModels.MerchAgregate;
 using MerchandaiseDomain.AggregationModels.OrdersAgregate;
+using MerchandaiseDomain.Exceptions.EmployeeValidation;
 using MerchandaiseDomain.Models;
 using MerchandaiseDomainServices.Interfaces;
 using MerchType = MerchandaiseDomain.AggregationModels.MerchAgregate.MerchType;
@@ -31,52 +32,54 @@ namespace MerchandaiseDomainServices
             _stockGateway = stockGateway;
         }
 
-        public async Task RequestMerch(string employeeEmail, MerchType merchType, CancellationToken token)
+        public async Task<Orders> RequestMerch(string employeeEmail, int merchId, CancellationToken token)
         {
+            Orders orders;
             await _unitOfWork.StartTransaction(token);
-            var orders = await _ordersRepository.FindByEmloyeeEmailAsync(employeeEmail);
-            var merch = await _merchRepository.FindByMerchType(merchType.Id);
+            try
+            {
+                orders = await _ordersRepository.FindByEmloyeeEmailAsync(employeeEmail);
+            }
+            catch (Exception e)
+            {
+                var employee = new Employee(new Id(null), new FirstName(null), new MiddleName(null), new LastName(null),
+                    new Email(employeeEmail));
+                await _employeeRepository.CreateAsync(employee, token);
+                orders = new Orders(
+                    employee,
+                    new List<Merch>()
+                );
+            }
+            
+            var merch = await _merchRepository.GetAvailableMerchByType(merchId, token);
+            
+            await _merchRepository.CreateAsync(merch, token);
             orders.CheckWasRequested(merch);
             orders.AddMerchToOrders(merch);
+            await _ordersRepository.CreateAsync(orders);
+            
+            // if (await _stockGateway.CheckIsAvailableAsync(merch.MerchItems))
+            // {
+            //     if (await _stockGateway.TryDeliverSkuAsync(orders.Employee.Email.Value, merch.MerchItems))
+            //     {
+            //         merch.ChangeStatus(Status.Issued);
+            //     }
+            //     else merch.ChangeStatus(Status.Waiting);
+            // }
+            // else merch.ChangeStatus(Status.Waiting);
 
-            if (await _stockGateway.CheckIsAvailableAsync(merch.MerchItems))
-            {
-                if (await _stockGateway.TryDeliverSkuAsync(orders.Employee.Email.Value, merch.MerchItems))
-                {
-                    merch.ChangeStatus(Status.Issued);
-                }
-                else merch.ChangeStatus(Status.Waiting);
-            }
-            else merch.ChangeStatus(Status.Waiting);
-
+            await _merchRepository.UpdateAsync(merch);
             await _unitOfWork.SaveChangesAsync();
+            return orders;
         }
 
-        public async Task RequestMerch(long employeeId, MerchType merchType, CancellationToken token)
-        {
-            var orders = await _ordersRepository.FindByEmloyeeIdAsync(employeeId);
-            var merch = await _merchRepository.FindByMerchType(merchType.Id);
-            orders.CheckWasRequested(merch);
-            orders.AddMerchToOrders(merch);
 
-            if (await _stockGateway.CheckIsAvailableAsync(merch.MerchItems))
-            {
-                if (await _stockGateway.TryDeliverSkuAsync(orders.Employee.Email.Value, merch.MerchItems))
-                {
-                    merch.ChangeStatus(Status.Issued);
-                }
-                else merch.ChangeStatus(Status.Waiting);
-            }
-            else merch.ChangeStatus(Status.Waiting);
-
-            await _unitOfWork.SaveChangesAsync();
-        }
 
         public async Task CheckWasIssued(long employeeId, MerchType merchType, CancellationToken token)
         {
             var orders = await _ordersRepository.FindByEmloyeeIdAsync(employeeId);
-            var merch = await _merchRepository.FindByMerchType(merchType.Id);
-            orders.CheckWasIssued(merch);
+            //var merch = await _merchRepository.FindByMerchType(merchType.Id);
+            //orders.CheckWasIssued(merch);
         }
 
         public async Task NewSupply(SupplyShippedEvent supplyShippedEvent, CancellationToken token)
@@ -118,8 +121,14 @@ namespace MerchandaiseDomainServices
                 var merchType = ((MerchDeliveryEventPayload) notificationEvent.Payload).MerchType;
                 var empl = await _employeeRepository.FindEmployeeByEmail(notificationEvent.EmployeeEmail);
 
-                await RequestMerch(empl.Id.Value, merchType, token);
+                await RequestMerch(empl.Email.Value, merchType.Id, token);
             }
         }
+
+        public async Task<List<Merch>> GetAvailableMerchList(CancellationToken token)
+        {
+            return await _merchRepository.GetAvailableMerchList(token);
+        }
+        
     }
 }

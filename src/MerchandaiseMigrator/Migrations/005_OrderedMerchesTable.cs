@@ -17,7 +17,7 @@ namespace MerchandaiseMigrator.Migrations
 					requestDate DATE,
 					CONSTRAINT fk_merchType
 					  FOREIGN KEY(merchTypeId) 
-					  REFERENCES merchtypes(id),
+					  REFERENCES merchtypes(id));
 ");
         }
 

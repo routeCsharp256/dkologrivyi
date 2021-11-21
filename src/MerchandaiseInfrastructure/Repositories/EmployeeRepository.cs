@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Dapper;
 using MerchandaiseDomain.AggregationModels.Contracts;
 using MerchandaiseDomain.AggregationModels.EmployeeAgregate;
+using MerchandaiseInfrastructure.Exeptions;
 using MerchandaiseInfrastructure.Infrastructure.Interfaces;
 using MerchandaiseInfrastructure.Models;
 using Npgsql;
@@ -26,7 +27,27 @@ namespace MerchandaiseInfrastructure.Repositories
 
         public async Task<Employee> CreateAsync(Employee itemToCreate, CancellationToken cancellationToken = default)
         {
-            throw new System.NotImplementedException();
+            const string sql = @"INSERT INTO employees(
+	            firstname, middlename, lastname, email)
+	            VALUES (@firstname, @middlename, @lastname, @email);";
+
+            var parameters = new
+            {
+                firstname = itemToCreate.FirstName.Value,
+                middlename = itemToCreate.MiddleName.Value,
+                lastname = itemToCreate.LastName.Value,
+                email = itemToCreate.Email.Value
+            };
+            var commandDefinition = new CommandDefinition(
+                sql,
+                parameters: parameters,
+                commandTimeout: Timeout,
+                cancellationToken: cancellationToken);
+            var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
+            int id = await connection.QuerySingleAsync<int>(commandDefinition);
+            itemToCreate.Id = new Id(id);
+            _changeTracker.Track(itemToCreate);
+            return itemToCreate;
         }
 
         public async Task<Employee> UpdateAsync(Employee itemToUpdate, CancellationToken cancellationToken = default)
@@ -54,14 +75,20 @@ namespace MerchandaiseInfrastructure.Repositories
 
             var employees = await connection.QueryAsync<EmployeeDb>(commandDefinition);
             var employee = employees.FirstOrDefault();
-            var result = new Employee(
-                new Id(employee.EmploieeId),
-                new FirstName(employee.Firstname),
-                new MiddleName(employee.Middlename),
-                new LastName(employee.Lastname),
-                new Email(employee.Email)
-            );
-            return result;
+            
+            if (employee is not null)
+            {
+                var result = new Employee(
+                    new Id(employee.EmploieeId),
+                    new FirstName(employee.Firstname),
+                    new MiddleName(employee.Middlename),
+                    new LastName(employee.Lastname),
+                    new Email(employee.Email)
+                );
+                return result;
+            }
+
+            throw new EmployeeNotFoundInDbExeption();
 
         }
     }

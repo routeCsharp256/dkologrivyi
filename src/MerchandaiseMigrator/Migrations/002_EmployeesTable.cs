@@ -13,7 +13,7 @@ namespace MerchandaiseMigrator.Migrations
 					firstName TEXT,
 					middleName TEXT,
 					lastName TEXT,
-					email TEXT IS NOT NULL);
+					email TEXT NOT NULL);
 ");
         }
     

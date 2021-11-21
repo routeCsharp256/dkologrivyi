@@ -10,7 +10,7 @@ namespace MerchandaiseMigrator.Migrations
         {
             Execute.Sql(@"
                 CREATE TABLE if not exists merchTypes(
-                    id BIGSERIAL PRIMARY KEY,
+                    id INT PRIMARY KEY,
                     name TEXT NOT NULL);
                     ");
             Execute.Sql(@"

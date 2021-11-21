@@ -72,6 +72,7 @@ namespace MerchandiseService
             services.AddScoped<IOrdersRepository, OrdersRepository>();
             services.AddScoped<IMerchRepository, MerchRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IMerchTypeRepository, MerchTypeRepository>();
         }
         
         private void AddDatabaseComponents(IServiceCollection services)

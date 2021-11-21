@@ -15,6 +15,7 @@ namespace MerchandaiseMigrator.Migrations
 					CONSTRAINT fk_merchType
 					  FOREIGN KEY(merchTypeId) 
 					  REFERENCES merchtypes(id));
+
 					  ");
             
             Execute.Sql(@"

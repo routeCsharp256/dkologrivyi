@@ -15,6 +15,8 @@ namespace MerchandaiseMigrator.Migrations
 		                FOREIGN KEY (availableMerchId) 
 		                REFERENCES availableMerches(MERCHID) 
 		                ON DELETE CASCADE);
+
+
 		                ");
             Execute.Sql(@"
 				INSERT INTO public.availablemerchitems(

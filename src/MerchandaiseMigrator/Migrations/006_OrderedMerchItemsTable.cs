@@ -12,7 +12,7 @@ namespace MerchandaiseMigrator.Migrations
                 CREATE TABLE IF NOT EXISTS orderedMerchItems
 	                (id BIGSERIAL PRIMARY KEY,
 			                skuId BIGSERIAL,
-			                quantity INT, 
+			                quantity BIGSERIAL, 
 			                orderedMerchId BIGSERIAL,
 			                CONSTRAINT FK_ORDEREDMERCH
 		                FOREIGN KEY (orderedMerchId) 
