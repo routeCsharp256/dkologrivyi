@@ -7,7 +7,7 @@ using MerchandiseService.Grpc;
 
 namespace MerchandiseService.GrpcServices
 {
-    public class MerchandiseGrpcService:MerchandiseGrpc.MerchandiseGrpcBase
+    public class MerchandiseGrpcService : MerchandiseGrpc.MerchandiseGrpcBase
     {
         private readonly IMerchService _merchService;
 
@@ -17,17 +17,17 @@ namespace MerchandiseService.GrpcServices
         }
 
 
-        public override Task<MerchandiseRequestResult> RequestMerch(MerchandiseRequest request, ServerCallContext context)
+        public override Task<MerchandiseRequestResult> RequestMerch(MerchandiseRequest request,
+            ServerCallContext context)
         {
-            throw new NotImplementedException();
-            //return Task.Run(() => new MerchandiseRequestResult() {Result = "test"});
+            return Task.Run(() => new MerchandiseRequestResult() {Result = "test"});
         }
 
 
-        public override Task<GetIssuedMerchesResponse> GetIssuedMerch(GetIssuedMerchesRequest request, ServerCallContext context)
+        public override Task<GetIssuedMerchesResponse> GetIssuedMerch(GetIssuedMerchesRequest request,
+            ServerCallContext context)
         {
-            throw new NotImplementedException();
-            //return Task.Run(() => new GetIssuedMerchesResponse() {Response = "test2"});
+            return Task.Run(() => new GetIssuedMerchesResponse() {Response = "test2"});
         }
     }
 }

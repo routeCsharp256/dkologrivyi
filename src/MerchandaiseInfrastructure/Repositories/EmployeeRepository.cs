@@ -108,6 +108,7 @@ namespace MerchandaiseInfrastructure.Repositories
                     new LastName(employee.Lastname),
                     new Email(employee.Email)
                 );
+                _changeTracker.Track(result);
                 return result;
             }
 

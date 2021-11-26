@@ -120,9 +120,113 @@ namespace MerchandaiseInfrastructure.Repositories
             return orders;
         }
 
-        public async Task<List<Orders>> GetUnIssuedOrders(CancellationToken token)
+        public async Task<List<Orders>> GetOrdersByStatus(Status status, CancellationToken token)
         {
-            throw new System.NotImplementedException();
+            const string sql =
+                @"SELECT orders.orderid, orders.employeeid, orders.orderedmerchid, orderedmerches.merchid, orderedmerches.name, 
+                orderedmerches.merchtypeid, orderedmerches.statusid, orderedmerches.requestdate,
+                orderedmerchitems.id, orderedmerchitems.skuid, orderedmerchitems.quantity, orderedmerchitems.orderedmerchid,
+                employees.employeeid, employees.firstname, employees.middlename, employees.lastname, employees.email,
+                merchtypes.id, merchtypes.name
+                FROM orders
+                INNER JOIN orderedmerches ON orders.orderedmerchid = orderedmerches.merchid
+                INNER JOIN orderedmerchitems ON orderedmerches.merchid = orderedmerchitems.orderedmerchid
+                INNER JOIN employees ON orders.employeeid = employees.employeeid
+                INNER JOIN merchtypes ON orderedmerches.merchtypeid = merchtypes.id
+                WHERE orderedmerches.statusid = @MerchStatus";
+
+            var parameters = new
+            {
+                MerchStatus = status.Id
+            };
+
+            var connection = await _dbConnectionFactory.CreateConnection(token);
+            var result = await connection
+                .QueryAsync<OrdersDb, OrderedMerchesDb, OrderedMerchItemDb, EmployeeDb, MerchTypeDb,
+                    FindOrdersByEmloyeeResponse>(
+                    sql,
+                    ((ordersDb, orderedMerchesDb, orderedMerchItemDb, employeeDb, merchTypeDb) =>
+                        {
+                            return new FindOrdersByEmloyeeResponse(ordersDb, orderedMerchesDb, orderedMerchItemDb,
+                                employeeDb,
+                                merchTypeDb);
+                        }
+                    ),
+                    splitOn: "merchid,id,employeeid,id",
+                    param: parameters
+                );
+
+            //сотрудники у которых есть заказы соответствующие статусу
+            var employeeDb = result.Select(e => e.EmployeeDb).GroupBy(x => x.EmployeeId).Select(x => x.First());
+            
+            //заказы с мерчами, которые соответсвуют статусу
+            var ordersDb = result.Select(e => e.OrdersDb).GroupBy(x => x.OrderId).Select(x => x.First());
+            
+            //заказанные мерчи в формате БД
+            var orderedMerchesDb =
+                result.Select(e => e.OrderedMerchesDb).GroupBy(x => x.MerchId).Select(x => x.First());
+
+            //Items относящиеся к заказам 
+            var orderedMerchItemDbGroups = result.Select(e => e.OrderedMerchItemDb).GroupBy(x => x.OrderedMerchId);
+
+            // собираем коллекцию в которой в ключе будет храниться id мерча, а в значении коллекция items, относящихся к этому мерчу
+            Dictionary<long, List<MerchItem>> merchItemsDict = new Dictionary<long, List<MerchItem>>();
+            foreach (var orderedMerchItemDbGroup in orderedMerchItemDbGroups)
+            {
+                List<MerchItem> merchItemList = new List<MerchItem>();
+                long orderedMerchId = 0;
+                foreach (var item in orderedMerchItemDbGroup)
+                {
+                    merchItemList.Add(new MerchItem(
+                        new Sku(item.SkuId),
+                        new MerchItemQuantity(item.Quantity)
+                    ));
+                    if (orderedMerchId == 0)
+                        orderedMerchId = item.OrderedMerchId;
+                }
+
+                if (orderedMerchId == 0) throw new Exception("Ошибка чтения БД. merchItem не относится к Merch");
+                merchItemsDict.Add(orderedMerchId, merchItemList);
+            }
+
+            var merchTypes = result.Select(e => e.MerchTypeDb).GroupBy(x => x.Id)
+                .Select(x => x.First()).Select(x => new MerchType(x.Id, x.Name));
+
+            List<Merch> merches = orderedMerchesDb.Select(x =>
+                new Merch(
+                    new MerchId(x.MerchId),
+                    new Name(x.Name),
+                    merchTypes.Where(mt => mt.Id == x.MerchTypeId).FirstOrDefault(),
+                    merchItemsDict.GetValueOrDefault(x.MerchId),
+                    Status.FromId(x.StatusId),
+                    new RequestDate(x.RequestDate)
+                )
+            ).ToList();
+
+            List<Employee> employees = employeeDb.Select(emp =>
+                new Employee(
+                    new Id(emp.EmployeeId),
+                    new FirstName(emp.Firstname),
+                    new MiddleName(emp.Middlename),
+                    new LastName(emp.Lastname),
+                    new Email(emp.Email)
+                )
+            ).ToList();
+
+            //собираем всё вместе
+            var ordersList = new List<Orders>();
+            foreach (var employee in employees)
+            {
+                var currentEmlMerches = ordersDb.Where(o=>o.EmployeeId==employee.Id.Value).Select(x => x.OrderedMerchId);
+                ordersList.Add(
+                    new Orders(
+                        employee,
+                        merches.Where(m => currentEmlMerches.Contains(m.MerchId.Value)).ToList()
+                    )
+                );
+            }
+
+            return ordersList;
         }
 
         public async Task CreateAsync(long employeeId, long orderedMerchId, CancellationToken cancellationToken)

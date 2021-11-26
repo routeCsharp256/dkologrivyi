@@ -50,7 +50,6 @@ namespace MerchandaiseInfrastructure
                         x.ClearDomainEvents();
                         return events;
                     }));
-            //TODO отправлять все и сразу через Task.WhenAll.
             while (domainEvents.TryDequeue(out var notification))
             {
                 await _publisher.Publish(notification, cancellationToken);

@@ -43,12 +43,12 @@ namespace MerchandiseService.Controllers.V1
         }
 
         [HttpGet("checkWasIssued")]
-        public async Task<ActionResult<List<MerchandiseResponse>>> CheckWasIssued(
-            [FromBody] MerchandiseRequest requestModel, CancellationToken token)
+        public async Task<ActionResult> CheckWasIssued(
+            string employeeEmail, int merchTypeId, CancellationToken token)
         {
             try
             {
-                //await _merchService.CheckWasIssued(requestModel.Employee.Id.Value, requestModel.Merch.Type);
+                await _merchService.CheckWasIssued(employeeEmail, merchTypeId, token);
                 return Ok("Merch was not issued yet");
             }
             catch (Exception e)

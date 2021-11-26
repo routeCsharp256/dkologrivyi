@@ -12,7 +12,7 @@ namespace MerchandaiseDomainServices.Interfaces
     {
         public Task<Orders> RequestMerch(string employeeEmail, int merchTypeId, CancellationToken token);
         
-        public Task CheckWasIssued(long employeeId, MerchType merchType, CancellationToken token);
+        public Task CheckWasIssued(string employeeEmail, int merchTypeId, CancellationToken token);
 
         public Task NewSupply(SupplyShippedEvent supplyShippedEvent, CancellationToken token);
         
