@@ -29,14 +29,15 @@ namespace MerchandaiseInfrastructure.Repositories
         {
             const string sql = @"INSERT INTO employees(
 	            firstname, middlename, lastname, email)
-	            VALUES (@firstname, @middlename, @lastname, @email);";
+	            VALUES (@FirstName, @MiddleName, @LastName, @Email)
+	            RETURNING employeeid;";
 
             var parameters = new
             {
-                firstname = itemToCreate.FirstName.Value,
-                middlename = itemToCreate.MiddleName.Value,
-                lastname = itemToCreate.LastName.Value,
-                email = itemToCreate.Email.Value
+                FirstName = itemToCreate.FirstName.Value,
+                MiddleName = itemToCreate.MiddleName.Value,
+                LastName = itemToCreate.LastName.Value,
+                Email = itemToCreate.Email.Value
             };
             var commandDefinition = new CommandDefinition(
                 sql,
@@ -44,15 +45,37 @@ namespace MerchandaiseInfrastructure.Repositories
                 commandTimeout: Timeout,
                 cancellationToken: cancellationToken);
             var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
-            int id = await connection.QuerySingleAsync<int>(commandDefinition);
-            itemToCreate.Id = new Id(id);
+            long id = await connection.ExecuteScalarAsync<long>(commandDefinition);
+            itemToCreate.Id =  new Id(id);
             _changeTracker.Track(itemToCreate);
             return itemToCreate;
         }
 
         public async Task<Employee> UpdateAsync(Employee itemToUpdate, CancellationToken cancellationToken = default)
         {
-            throw new System.NotImplementedException();
+            const string sql = @"
+                UPDATE public.employees
+	                SET firstname=@FirstName, middlename=@MiddleName, lastname=@LastName, email=@Email
+	                WHERE employeeid=@EmployeeId;";
+            
+            var parameters = new
+            {
+                FirstName=itemToUpdate.FirstName.Value,
+                MiddleName=itemToUpdate.MiddleName.Value,
+                LastName=itemToUpdate.LastName.Value,
+                Email = itemToUpdate.Email.Value,
+                EmployeeId=itemToUpdate.Id.Value
+            };
+            
+            var commandDefinition = new CommandDefinition(
+                sql,
+                parameters: parameters,
+                commandTimeout: Timeout,
+                cancellationToken: cancellationToken);
+            var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
+            await connection.ExecuteAsync(commandDefinition);
+            _changeTracker.Track(itemToUpdate);
+            return itemToUpdate;
         }
 
         public async Task<Employee> FindEmployeeByEmail(string email, CancellationToken cancellationToken = default)
@@ -79,7 +102,7 @@ namespace MerchandaiseInfrastructure.Repositories
             if (employee is not null)
             {
                 var result = new Employee(
-                    new Id(employee.EmploieeId),
+                    new Id(employee.EmployeeId),
                     new FirstName(employee.Firstname),
                     new MiddleName(employee.Middlename),
                     new LastName(employee.Lastname),
@@ -88,7 +111,7 @@ namespace MerchandaiseInfrastructure.Repositories
                 return result;
             }
 
-            throw new EmployeeNotFoundInDbExeption();
+            return null;
 
         }
     }

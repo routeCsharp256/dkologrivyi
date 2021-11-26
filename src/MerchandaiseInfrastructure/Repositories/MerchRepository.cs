@@ -40,12 +40,14 @@ namespace MerchandaiseInfrastructure.Repositories
         {
             const string sql = @"
                 INSERT INTO public.orderedmerches(
-	            orderedmerches.merchid, orderedmerches.name, orderedmerches.merchtypeid, orderedmerches.statusid, orderedmerches.requestdate)
-	            VALUES (@name, @merchtypeid, @statusid, @requestdate);";
+	            name, merchtypeid, statusid, requestdate) 
+	            VALUES (@Name, @MerchTypeId, @StatusId, @RequestDate)
+	            RETURNING merchid;	            
+	            ";
 
             var parameters = new
             {
-                Merchid = itemToCreate.Id,
+                //Merchid = itemToCreate.Id,
                 Name = itemToCreate.Name.Value,
                 MerchTypeId = itemToCreate.Type.Id,
                 StatusId = itemToCreate.Status.Id,
@@ -57,7 +59,8 @@ namespace MerchandaiseInfrastructure.Repositories
                 commandTimeout: Timeout,
                 cancellationToken: cancellationToken);
             var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
-            await connection.ExecuteAsync(commandDefinition);
+            long id = await connection.ExecuteScalarAsync<long>(commandDefinition);
+            itemToCreate.MerchId = new MerchId(id);
             _changeTracker.Track(itemToCreate);
             return itemToCreate;
         }
@@ -66,8 +69,8 @@ namespace MerchandaiseInfrastructure.Repositories
         {
             const string sql = @"
 	            INSERT INTO public.orderedmerchitems(
-	            id, skuid, quantity, orderedmerchid)
-	            VALUES (@id, @skuid, @quantity, @orderedmerchid);	
+	            skuid, quantity, orderedmerchid)
+	            VALUES (@SkuId, @Quantity, @OrderedMerchId);	
 	            ";
             var merchItemDbList = itemToCreate.MerchItems.Select(
                 x => new MerchItemDb(
@@ -94,19 +97,18 @@ namespace MerchandaiseInfrastructure.Repositories
         {
             const string sql = @"
                 UPDATE orderedmerches
-	                SET orderedmerches.merchid=@MerchId, orderedmerches.name=@Name, orderedmerches.merchtypeid=@MerchTypeId, 
-	                    orderedmerches.statusid=@StatusId, orderedmerches.requestdate=@RequestDate
-	                WHERE orderedmerches.merchid=@MerchIdCondition;
+	                SET name=@Name, merchtypeid=@MerchTypeId, 
+	                    statusid=@StatusId, requestdate=@RequestDate
+	                WHERE merchid=@MerchId;
 	                ";
 
             var parameters = new
             {
-                MerchId=itemToUpdate.Id,
                 Name=itemToUpdate.Name.Value,
                 MerchTypeId=itemToUpdate.Type.Id,
                 StatusId=itemToUpdate.Status.Id,
                 RequestDate=itemToUpdate.RequestDate.Value,
-                MerchIdCondition=itemToUpdate.Id
+                MerchId=itemToUpdate.MerchId.Value
             };
             var commandDefinition = new CommandDefinition(
                 sql,
@@ -128,15 +130,6 @@ namespace MerchandaiseInfrastructure.Repositories
 
         public async Task<List<Merch>> GetAvailableMerchList(CancellationToken cancellationToken)
         {
-            // const string sql = @"
-            //     SELECT availablemerches.merchid, availablemerches.name, availablemerches.merchtypeid, 
-            //     merchtypes.id, merchtypes.name,
-            //     availablemerchitems.id, availablemerchitems.skuid, availablemerchitems.quantity, availablemerchitems.availablemerchid
-            //     FROM availablemerches
-            //     INNER JOIN merchtypes ON availablemerches.merchtypeid=merchtypes.id
-            //     INNER JOIN availablemerchitems ON availablemerchitems.availablemerchid = availablemerches.merchid
-            //     ;";
-
             var availableMerchDbs = await GetAvailableMerchDbs(cancellationToken);
             var availableMerchItemDbs = await GetAvailableMerchItemDbs(cancellationToken);
             var merchType = await _merchTypeRepository.GetAllTypes(cancellationToken);

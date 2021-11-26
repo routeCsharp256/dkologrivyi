@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
 using MerchandaiseDomain.Models;
 
-namespace MerchandaiseDomain.AggregationModels.MerchAgregate
+namespace MerchandaiseDomain.AggregationModels.OrdersAgregate
 {
-    public class MerchId : ValueObject
+    public class OrderId: ValueObject
     {
         public long Value { get; }
 
-        public MerchId(long merchId)
+        public OrderId(long orderId)
         {
-            Value = merchId;
+            Value = orderId;
         }
-
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Value;

@@ -9,7 +9,7 @@ namespace MerchandaiseDomain.Models
         int? _requestedHashCode;
         public virtual int Id { get; protected set; }
 
-        private List<INotification> _domainEvents;
+        private List<INotification> _domainEvents = new();
         public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
 
         public void AddDomainEvent(INotification eventItem)

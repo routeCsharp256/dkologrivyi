@@ -36,13 +36,11 @@ namespace MerchandaiseDomainServices
         {
             Orders orders;
             await _unitOfWork.StartTransaction(token);
-            try
+
+            orders = await _ordersRepository.FindByEmloyeeEmailAsync(employeeEmail, token);
+            if (orders is null) //нет ни сотрудника, ни его заказов
             {
-                orders = await _ordersRepository.FindByEmloyeeEmailAsync(employeeEmail);
-            }
-            catch (Exception e)
-            {
-                var employee = new Employee(new Id(null), new FirstName(null), new MiddleName(null), new LastName(null),
+                var employee = new Employee(null, new FirstName(null), new MiddleName(null), new LastName(null),
                     new Email(employeeEmail));
                 await _employeeRepository.CreateAsync(employee, token);
                 orders = new Orders(
@@ -50,14 +48,14 @@ namespace MerchandaiseDomainServices
                     new List<Merch>()
                 );
             }
-            
+
             var merch = await _merchRepository.GetAvailableMerchByType(merchId, token);
-            
+
             await _merchRepository.CreateAsync(merch, token);
             orders.CheckWasRequested(merch);
             orders.AddMerchToOrders(merch);
-            await _ordersRepository.CreateAsync(orders);
-            
+            await _ordersRepository.CreateAsync(orders.Employee.Id.Value, merch.MerchId.Value, token);
+
             // if (await _stockGateway.CheckIsAvailableAsync(merch.MerchItems))
             // {
             //     if (await _stockGateway.TryDeliverSkuAsync(orders.Employee.Email.Value, merch.MerchItems))
@@ -68,16 +66,15 @@ namespace MerchandaiseDomainServices
             // }
             // else merch.ChangeStatus(Status.Waiting);
 
-            await _merchRepository.UpdateAsync(merch);
-            await _unitOfWork.SaveChangesAsync();
+            await _merchRepository.UpdateAsync(merch, token);
+            await _unitOfWork.SaveChangesAsync(token);
             return orders;
         }
 
 
-
         public async Task CheckWasIssued(long employeeId, MerchType merchType, CancellationToken token)
         {
-            var orders = await _ordersRepository.FindByEmloyeeIdAsync(employeeId);
+            //var orders = await _ordersRepository.FindByEmloyeeIdAsync(employeeId);
             //var merch = await _merchRepository.FindByMerchType(merchType.Id);
             //orders.CheckWasIssued(merch);
         }
@@ -91,7 +88,7 @@ namespace MerchandaiseDomainServices
             }
 
             //получаем набор всех заказов которые не были отправлены
-            List<Orders> employeesOrders = await _ordersRepository.GetUnIssuedOrders();
+            List<Orders> employeesOrders = await _ordersRepository.GetUnIssuedOrders(token);
 
             //по заказам каждого сотрудника смотрим какой из них можно переотправить
             foreach (var employeeOrders in employeesOrders)
@@ -102,7 +99,8 @@ namespace MerchandaiseDomainServices
                     {
                         if (await _stockGateway.CheckIsAvailableAsync(merch.MerchItems))
                         {
-                            if (await _stockGateway.TryDeliverSkuAsync(employeeOrders.Employee.Email.Value, merch.MerchItems))
+                            if (await _stockGateway.TryDeliverSkuAsync(employeeOrders.Employee.Email.Value,
+                                merch.MerchItems))
                             {
                                 merch.ChangeStatus(Status.Issued);
                             }
@@ -129,6 +127,5 @@ namespace MerchandaiseDomainServices
         {
             return await _merchRepository.GetAvailableMerchList(token);
         }
-        
     }
 }

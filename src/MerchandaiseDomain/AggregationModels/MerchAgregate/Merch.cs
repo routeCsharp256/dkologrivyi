@@ -43,7 +43,7 @@ namespace MerchandaiseDomain.AggregationModels.MerchAgregate
             RequestDate = new RequestDate(DateTime.Now);
         }
 
-        public MerchId MerchId { get; }
+        public MerchId MerchId { get; set; }
         public Name Name { get; }
         public MerchType Type { get; }
         public List<MerchItem> MerchItems { get; }

@@ -11,6 +11,7 @@ namespace MerchandaiseDomain.AggregationModels.OrdersAgregate
 {
     public class Orders : Entity
     {
+        public OrderId OrderId { get; set; }
         public Employee Employee { get; }
         public List<Merch> Merches { get; private set; }
 
