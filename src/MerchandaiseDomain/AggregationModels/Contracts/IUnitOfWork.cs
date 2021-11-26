@@ -5,6 +5,7 @@ namespace MerchandaiseDomain.AggregationModels.Contracts
 {
     public interface IUnitOfWork
     {
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+        ValueTask StartTransaction(CancellationToken token);
+        Task SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

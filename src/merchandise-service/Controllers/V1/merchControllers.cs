@@ -22,27 +22,33 @@ namespace MerchandiseService.Controllers.V1
         }
 
         [HttpPost("requestMerch")]
-        public async Task<IActionResult> RequestMerch([FromBody] MerchandiseRequest requestModel, CancellationToken token)
+        public async Task<IActionResult> RequestMerch([FromBody] MerchandiseRequest requestModel,
+            CancellationToken token)
         {
             try
             {
-                await _merchService.RequestMerch(requestModel.Employee.Id.Value, requestModel.Merch.Type);
+                await _merchService.RequestMerch(requestModel.Email, requestModel.MerchId, token);
                 return Ok("Success");
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
-            
-             
+        }
+
+        [HttpGet("getAvailableMerchList")]
+        public async Task<List<Merch>> GetAvailableMerchList(CancellationToken token)
+        {
+            return await _merchService.GetAvailableMerchList(token);
         }
 
         [HttpGet("checkWasIssued")]
-        public async Task<ActionResult<List<MerchandiseResponse>>> CheckWasIssued([FromBody] MerchandiseRequest requestModel, CancellationToken token)
+        public async Task<ActionResult> CheckWasIssued(
+            string employeeEmail, int merchTypeId, CancellationToken token)
         {
             try
             {
-                await _merchService.CheckWasIssued(requestModel.Employee.Id.Value, requestModel.Merch.Type);
+                await _merchService.CheckWasIssued(employeeEmail, merchTypeId, token);
                 return Ok("Merch was not issued yet");
             }
             catch (Exception e)

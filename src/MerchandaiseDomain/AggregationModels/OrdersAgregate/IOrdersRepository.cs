@@ -2,22 +2,21 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MerchandaiseDomain.AggregationModels.Contracts;
+using MerchandaiseDomain.AggregationModels.MerchAgregate;
 
 namespace MerchandaiseDomain.AggregationModels.OrdersAgregate
 {
-    public interface IOrdersRepository:IRepository<Orders>
+    public interface IOrdersRepository
     {
-
         /// <summary>
         /// Найти заказы пользователя по его id
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="employeeEmail"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Orders> FindByEmloyeeIdAsync(long id, CancellationToken cancellationToken = default);
+        Task<Orders> FindByEmloyeeEmailAsync(string employeeEmail, CancellationToken cancellationToken);
+        Task<List<Orders>> GetOrdersByStatus(Status status, CancellationToken cancellationToken);
 
-
-        Task<List<Orders>> GetUnIssuedOrders(CancellationToken cancellationToken = default);
-
+        Task CreateAsync(long employeeId, long orderedMerchId, CancellationToken cancellationToken);
     }
 }

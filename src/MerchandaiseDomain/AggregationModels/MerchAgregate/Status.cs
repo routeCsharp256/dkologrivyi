@@ -1,4 +1,6 @@
-﻿using MerchandaiseDomain.Models;
+﻿using System.Collections.Generic;
+using System.Linq;
+using MerchandaiseDomain.Models;
 
 namespace MerchandaiseDomain.AggregationModels.MerchAgregate
 {
@@ -10,6 +12,19 @@ namespace MerchandaiseDomain.AggregationModels.MerchAgregate
 
         public Status(int id, string name) : base(id, name)
         {
+            
+        }
+       
+        public static Status FromId(int StatusId)
+        {
+            return List().Single(r => int.Equals(r.Id, StatusId));
+        }
+        
+        
+        public static IEnumerable<Status> List()
+        {
+            // alternately, use a dictionary keyed by value
+            return new[]{Processing,Waiting,Issued};
         }
     }
 }

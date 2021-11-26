@@ -14,7 +14,7 @@ namespace MerchandaiseDomain.AggregationModels.EmployeeAgregate
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            throw new System.NotImplementedException();
+            yield return Value;
         }
     }
 }

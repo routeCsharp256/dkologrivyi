@@ -5,13 +5,13 @@ namespace MerchandiseService.Models
 {
     public class MerchandiseRequest
     {
-        public Employee Employee { get; }
-        public Merch Merch { get; }
+        public string Email { get; }
+        public int MerchId { get; }
 
-        public MerchandiseRequest(Employee employee, Merch merch)
+        public MerchandiseRequest(string Email, int MerchId)
         {
-            Employee = employee;
-            Merch = merch;
+            this.Email = Email;
+            this.MerchId = MerchId;
         }
     }
 }

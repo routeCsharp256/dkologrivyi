@@ -12,13 +12,15 @@ namespace MerchandaiseDomain.AggregationModels.MerchAgregate
         /// <summary>
         /// объект для уже запрошенных мерчей
         /// </summary>
+        /// <param name="merchId"></param>
         /// <param name="name"></param>
         /// <param name="type"></param>
         /// <param name="merchItems"></param>
         /// <param name="status"></param>
         /// <param name="requestDate"></param>
-        public Merch(Name name, MerchType type, List<MerchItem> merchItems, Status status, RequestDate requestDate)
+        public Merch(MerchId merchId, Name name, MerchType type, List<MerchItem> merchItems, Status status, RequestDate requestDate)
         {
+            MerchId = merchId;
             Name = name;
             Type = type;
             MerchItems = merchItems;
@@ -41,6 +43,7 @@ namespace MerchandaiseDomain.AggregationModels.MerchAgregate
             RequestDate = new RequestDate(DateTime.Now);
         }
 
+        public MerchId MerchId { get; set; }
         public Name Name { get; }
         public MerchType Type { get; }
         public List<MerchItem> MerchItems { get; }
@@ -53,6 +56,7 @@ namespace MerchandaiseDomain.AggregationModels.MerchAgregate
                 throw new MerchChangeStatusException("Merch is issued. Can't change status!");
             Status = status;
             RequestDate = new RequestDate(DateTime.Now);
+            
         }
 
         public bool CanBeShipped(List<MerchItem> items)

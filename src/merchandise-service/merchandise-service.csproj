@@ -12,10 +12,12 @@
       <ProjectReference Include="..\MerchandaiseGrpcClient\MerchandaiseGrpcClient.csproj" />
       <ProjectReference Include="..\MerchandaiseGrpc\MerchandaiseGrpc.csproj" />
       <ProjectReference Include="..\MerchandaiseInfrastructure\MerchandaiseInfrastructure.csproj" />
+      <ProjectReference Include="..\MerchandaiseMigrator\MerchandaiseMigrator.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Grpc.Core" Version="2.41.1" />
+      <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     </ItemGroup>
 
     <ItemGroup>
